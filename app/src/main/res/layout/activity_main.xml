@@ -38,4 +38,22 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="35dp" />
 
+    <Button
+        android:id="@+id/testMapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:text="Button"
+        app:layout_constraintTop_toBottomOf="@+id/test_counter"
+        tools:layout_editor_absoluteX="28dp" />
+
+    <Button
+        android:id="@+id/testHeartRateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Button"
+        app:layout_constraintTop_toBottomOf="@+id/testMapButton"
+        tools:layout_editor_absoluteX="0dp" />
+
 </android.support.constraint.ConstraintLayout>

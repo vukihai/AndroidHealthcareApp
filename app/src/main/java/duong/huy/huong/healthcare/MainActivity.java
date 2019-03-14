@@ -9,13 +9,19 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     //StepCounterSrv StepCountingService;
+    private Button testMapButton;
+    private Button testHeartRateButton;
     Intent intent;
+    Intent mapIntent;
+    Intent heartRateIntent;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -48,6 +54,24 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(getBaseContext(), StepCounterSrv.class));
         registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
         intent = new Intent("duong.huy.huong.stepcounterbroadcast");
+
+        mapIntent = new Intent(this, RouteTrackerActivity.class);
+        testMapButton = (Button) findViewById(R.id.testMapButton);
+        testMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(mapIntent);
+            }
+        });
+        testHeartRateButton = (Button) findViewById(R.id.testHeartRateButton);
+        heartRateIntent = new Intent(this, HeartRateActivity.class);
+        testHeartRateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(heartRateIntent);
+            }
+        });
     }
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -57,4 +81,5 @@ public class MainActivity extends AppCompatActivity {
             t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " bước");
         }
     };
+
 }
