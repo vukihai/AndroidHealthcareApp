@@ -1,4 +1,4 @@
-package duong.huy.huong.healthcare;
+package duong.huy.huong.healthcare.HeartRateMonitor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import duong.huy.huong.healthcare.R;
 
 public class HeartRateActivity extends AppCompatActivity {
     private static final String TAG = "HeartRateMonitor";

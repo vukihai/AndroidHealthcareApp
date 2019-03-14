@@ -1,4 +1,4 @@
-package duong.huy.huong.healthcare;
+package duong.huy.huong.healthcare.HeartRateMonitor;
 
 public abstract class ImageProcessing {
 

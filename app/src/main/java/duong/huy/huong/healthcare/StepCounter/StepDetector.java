@@ -1,4 +1,4 @@
-package duong.huy.huong.healthcare;
+package duong.huy.huong.healthcare.StepCounter;
 
 public class StepDetector {
 

@@ -1,4 +1,4 @@
-package duong.huy.huong.healthcare;
+package duong.huy.huong.healthcare.HeartRateMonitor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +8,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import duong.huy.huong.healthcare.R;
 
 
 /**

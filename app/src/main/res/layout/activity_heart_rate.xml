@@ -29,13 +29,13 @@
             android:text="@string/default_text"
             android:textSize="20sp"></TextView>
 
-        <duong.huy.huong.healthcare.HeartbeatPic
+        <duong.huy.huong.healthcare.HeartRateMonitor.HeartbeatPic
             android:id="@+id/image"
             android:layout_width="50dp"
             android:layout_height="27dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_weight="1"></duong.huy.huong.healthcare.HeartbeatPic>
+            android:layout_weight="1"></duong.huy.huong.healthcare.HeartRateMonitor.HeartbeatPic>
 
         <TextView
             android:id="@+id/rollavg_text"

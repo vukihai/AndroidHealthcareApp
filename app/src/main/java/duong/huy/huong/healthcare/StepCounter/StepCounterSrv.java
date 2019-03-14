@@ -1,4 +1,4 @@
-package duong.huy.huong.healthcare;
+package duong.huy.huong.healthcare.StepCounter;
 
 import android.app.Service;
 import android.content.Intent;

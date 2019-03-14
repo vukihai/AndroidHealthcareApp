@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
+import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
+import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;

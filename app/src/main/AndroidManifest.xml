@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HeartRateActivity">
+        <activity android:name=".HeartRateMonitor.HeartRateActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
         </activity>
 
         <service
-            android:name=".StepCounterSrv"
+            android:name=".StepCounter.StepCounterSrv"
             android:enabled="true"
             android:exported="true" />
         <!--
@@ -46,7 +46,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".RouteTrackerActivity"
+            android:name=".RouteTracker.RouteTrackerActivity"
             android:label="@string/title_activity_route_tracker">
 
             <!--
@@ -59,7 +59,7 @@
         </activity>
 
         <service
-            android:name=".StepCounterSrv"
+            android:name=".StepCounter.StepCounterSrv"
             android:enabled="true"
             android:exported="true" />
 
