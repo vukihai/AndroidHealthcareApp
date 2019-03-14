@@ -147,13 +147,13 @@ public class HeartRateActivity extends AppCompatActivity {
 
             imgavgtxt.setText("image average:"+ Integer.toString(imgAvg));
             rollavgtxt.setText("rolling average:"+ Integer.toString(rollingAverage));
-            if (imgAvg < rollingAverage) {
+            if (imgAvg < rollingAverage && imgAvg > 220) {
                 newType = TYPE.RED;
                 if (newType != currentType) {
                     beats++;
                     // Log.d(TAG, "BEAT!! beats="+beats);
                 }
-            } else if (imgAvg > rollingAverage) {
+            } else if (imgAvg > rollingAverage && imgAvg > 220) {
                 newType = TYPE.GREEN;
             }
 
