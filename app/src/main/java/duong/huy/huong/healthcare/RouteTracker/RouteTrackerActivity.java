@@ -12,6 +12,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import duong.huy.huong.healthcare.R;
+
 public class RouteTrackerActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
