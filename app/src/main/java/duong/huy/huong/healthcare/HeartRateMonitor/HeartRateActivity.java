@@ -155,7 +155,7 @@ public class HeartRateActivity extends AppCompatActivity {
                     beats++;
                     // Log.d(TAG, "BEAT!! beats="+beats);
                 }
-            } else if (imgAvg > rollingAverage && imgAvg > 220) {
+            } else if (imgAvg >= rollingAverage && imgAvg > 220) {
                 newType = TYPE.GREEN;
             }
 
