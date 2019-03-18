@@ -21,6 +21,7 @@ import android.widget.TextView;
 import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
+import duong.huy.huong.healthcare.SplashActivity;
 
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
@@ -80,12 +81,12 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         loadFragment(new Home());
-        //mTextMessage = (TextView) findViewById(R.id.mText_Message);
-        //mTextMessage.setText("tét");
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.getSupportActionBar().hide();

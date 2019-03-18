@@ -12,5 +12,6 @@
     <string name="remind">Nhắc nhở</string>
     <string name="Tracking">Theo dõi</string>
     <string name="Default_fragment_home_text">Đây là fragment mặc định khi chạy</string>
-    <string name="default_fragment_remind_text" >Đây là fragment chứa các chức năng nhắc nhở</string>
+    <string name="default_fragment_remind_text">Đây là fragment chứa các chức năng nhắc nhở</string>
+    <string name="splash_icon">splash icon</string>
 </resources>
