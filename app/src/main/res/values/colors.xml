@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="white">#FFFFFF</color>
+    <color name="colorGray">#D0D1D1</color>
+    <color name="homeActionBar">#76BDEF</color>
 </resources>

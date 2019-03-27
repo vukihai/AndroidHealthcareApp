@@ -1,14 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGray"
+    android:orientation="vertical"
     tools:context=".Home">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/Default_fragment_home_text" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/frm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="0dp"
+                    android:maxHeight="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/home_header" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="200dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_notifications_black_24dp"
+                        android:drawableEnd="@drawable/ic_dashboard_black_24dp"
+                        android:drawablePadding=" "
+                        android:onClick="stepCounterOnclick"
+                        android:text="TextView" />
+
+                    <Button
+                        android:id="@+id/step_counter_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableStart="@drawable/ic_notifications_black_24dp"
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+
+                    <Button
+                        android:id="@+id/step_counter_btn1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+                    <Button
+                        android:id="@+id/step_counter_btn2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+                    <Button
+                        android:id="@+id/step_counter_btn3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+                    <Button
+                        android:id="@+id/step_counter_btn4"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+                    <Button
+                        android:id="@+id/step_counter_btn5"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+                    <Button
+                        android:id="@+id/step_counter_btn6"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+                    <Button
+                        android:id="@+id/step_counter_btn7"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/home_button_height"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:drawableRight="@android:drawable/arrow_down_float"
+                        android:drawablePadding="@dimen/activity_vertical_margin"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:text="@string/step_counter_home" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_header_height"
+        android:background="@color/homeActionBar">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+    </FrameLayout>
 
 </FrameLayout>

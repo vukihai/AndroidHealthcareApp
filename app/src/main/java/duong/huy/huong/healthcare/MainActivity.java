@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
                     //mTextMessage.setText("abc");
                     mFragment = new Remind();
                     loadFragment(mFragment);
+
                     return true;
                 case R.id.navigation_notifications:
                     //mTextMessage.setText(R.string.title_notifications);
@@ -74,7 +76,10 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
+    public void stepCounterOnclick(View v) {
+        TextView mTextView = (TextView) findViewById(R.id.textView3);
+        mTextView.setText("clicked");
+    }
     /**
      * Hàm gọi 1 lần khi khởi tạo đối tượng.
      * @param savedInstanceState
@@ -84,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         loadFragment(new Home());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
