@@ -42,7 +42,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="200dp"
+                    android:layout_marginTop="@dimen/univers_header_height"
                     android:background="@color/home_background"
                     android:orientation="vertical">
 
