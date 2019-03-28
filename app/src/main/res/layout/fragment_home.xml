@@ -30,11 +30,28 @@
                     android:layout_height="@dimen/univers_header_height"
                     android:background="@drawable/home_header_background">
 
+                    <ImageView
+                        android:id="@+id/header_circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/univers_header_circle"
+                        android:layout_gravity="center"
+                        android:src="@drawable/home_header_circle" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="@dimen/univers_header_circle"
+                        android:layout_height="@dimen/univers_header_circle"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textSize="@dimen/univers_header_bigo" />
+
                     <TextView
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/header_text_margin"
                         android:text="0 bước | 0 calos"
                         android:textSize="@dimen/univers_header_text_size" />
                 </FrameLayout>

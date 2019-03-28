@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -97,6 +100,14 @@ public class Home extends Fragment {
         mTextView.setText(Html.fromHtml(getResources().getString(R.string.mystring)),
                 TextView.BufferType.SPANNABLE);
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
+
+        ImageView animationTarget = (ImageView) view.findViewById(R.id.header_circle);
+        RotateAnimation rotate = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        rotate.setDuration(4000);
+        rotate.setRepeatCount(Animation.INFINITE);
+        animationTarget.setAnimation(rotate);
 
         return view;
     }

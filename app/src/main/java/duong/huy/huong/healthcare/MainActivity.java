@@ -1,9 +1,6 @@
 package duong.huy.huong.healthcare;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,19 +8,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
-import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
-import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
-import duong.huy.huong.healthcare.SplashActivity;
 
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
@@ -80,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     }
     public void stepCounterOnclick(View v) {
         mStepCounterIntert = new Intent(this, StepCounterActivity.class);
-
         startActivity(mStepCounterIntert);
     }
     /**
@@ -96,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.getSupportActionBar().hide();
-
 
 //        startService(new Intent(getBaseContext(), StepCounterSrv.class));
 //        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
