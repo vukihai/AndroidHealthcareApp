@@ -2,12 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray"
-    android:orientation="vertical"
-    tools:context=".Home">
+    tools:context=".StepCounter.StepCounterActivity">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -24,26 +21,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <FrameLayout
+                <ImageView
                     android:id="@+id/header"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/univers_header_height"
-                    android:background="@drawable/home_header_background">
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="0 bước | 0 calos"
-                        android:textSize="@dimen/univers_header_text_size" />
-                </FrameLayout>
+                    android:layout_height="200dp"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="0dp"
+                    android:maxHeight="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/home_header" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="200dp"
-                    android:background="@color/home_background"
                     android:orientation="vertical">
 
                     <TextView
@@ -52,11 +43,10 @@
                         android:layout_height="@dimen/home_button_height"
                         android:layout_marginTop="@dimen/activity_horizontal_margin"
                         android:background="@color/white"
-                        android:drawableStart="@drawable/ic_notifications_black_24dp"
-                        android:drawableEnd="@drawable/ic_dashboard_black_24dp"
+
                         android:drawablePadding="@dimen/activity_vertical_margin"
                         android:gravity="start|center_vertical"
-                        android:onClick="stepCounterOnclick"
+
                         android:text="TextView"
                         android:textSize="@dimen/home_button_textsize" />
 
@@ -67,7 +57,7 @@
 
                         android:layout_marginTop="@dimen/activity_horizontal_margin"
                         android:background="@color/common_google_signin_btn_text_dark_default"
-                        android:drawableStart="@drawable/ic_notifications_black_24dp"
+
                         android:drawableEnd="@android:drawable/arrow_down_float"
                         android:drawableRight="@android:drawable/arrow_down_float"
                         android:drawablePadding="@dimen/activity_vertical_margin"
@@ -184,20 +174,4 @@
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/actionBar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/home_header_height"
-        android:background="@color/home_action_bar_color">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="0 bước | 0 calos"
-            android:textSize="@dimen/univers_header_text_size" />
-    </FrameLayout>
-
 </FrameLayout>

@@ -40,7 +40,7 @@ public class Home extends Fragment {
     private String mParam2;
     private OnFragmentInteractionListener mListener;
     private ScrollView mScrollView;
-    private ImageView mHeader;
+    private View mHeader;
     private FrameLayout mWrapper;
     private FrameLayout mActionBar;
     private Button mButton5;
@@ -87,7 +87,7 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
-        mHeader = (ImageView) view.findViewById(R.id.header);
+        mHeader = (View) view.findViewById(R.id.header);
         mWrapper = (FrameLayout) view.findViewById(R.id.frm);
         mActionBar = (FrameLayout) view.findViewById(R.id.actionBar);
         mActionBar.setVisibility(View.INVISIBLE);

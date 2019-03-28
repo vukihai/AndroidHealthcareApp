@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
+import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
 import duong.huy.huong.healthcare.SplashActivity;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
 //    Intent intent;
 //    Intent mapIntent;
 //    Intent heartRateIntent;
+    Intent mStepCounterIntert;
     /**
      * Bắt sự kiện click thanh điều hướng chân màn hình.
      */
@@ -77,8 +79,9 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         transaction.commit();
     }
     public void stepCounterOnclick(View v) {
-        TextView mTextView = (TextView) findViewById(R.id.textView3);
-        mTextView.setText("clicked");
+        mStepCounterIntert = new Intent(this, StepCounterActivity.class);
+
+        startActivity(mStepCounterIntert);
     }
     /**
      * Hàm gọi 1 lần khi khởi tạo đối tượng.
