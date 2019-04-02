@@ -67,7 +67,7 @@ public class RouteTrackerActivity extends FragmentActivity implements
 
         PolylineOptions polylineOptions = new PolylineOptions();
         polylineOptions.color(Color.CYAN);
-        polylineOptions.width(10);
+        polylineOptions.width(15);
         gpsTrack = map.addPolyline(polylineOptions);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
