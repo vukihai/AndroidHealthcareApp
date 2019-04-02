@@ -4,9 +4,24 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
 
 
 /**
@@ -26,9 +41,14 @@ public class Home extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
+    private ScrollView mScrollView;
+    private View mHeader;
+    private FrameLayout mWrapper;
+    private FrameLayout mActionBar;
+    private Button mButton5;
+    private Button mStepCounter;
+    TextView mTextView;
     public Home() {
         // Required empty public constructor
     }
@@ -58,15 +78,66 @@ public class Home extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
 
+    }
+    public void stepCounterOnclick(View v) {
+        mTextView.setText("clicked");
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
+        mHeader = (View) view.findViewById(R.id.header);
+        mWrapper = (FrameLayout) view.findViewById(R.id.frm);
+        mActionBar = (FrameLayout) view.findViewById(R.id.actionBar);
+        mActionBar.setVisibility(View.INVISIBLE);
+
+        mStepCounter = (Button) view.findViewById(R.id.step_counter_btn);
+        mTextView = (TextView) view.findViewById(R.id.textView3);
+        mTextView.setText(Html.fromHtml(getResources().getString(R.string.mystring)),
+                TextView.BufferType.SPANNABLE);
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
+
+        ImageView animationTarget = (ImageView) view.findViewById(R.id.header_circle);
+        RotateAnimation rotate = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        rotate.setDuration(4000);
+        rotate.setRepeatCount(Animation.INFINITE);
+        animationTarget.setAnimation(rotate);
+
+        return view;
+    }
+    private class ScrollPositionObserver implements ViewTreeObserver.OnScrollChangedListener {
+
+        private int mImageViewHeight;
+
+        public ScrollPositionObserver() {
+            mImageViewHeight = getResources().getDimensionPixelSize(R.dimen.home_header_height);
+        }
+
+        @Override
+        public void onScrollChanged() {
+            int scrollY = Math.min(Math.max(mScrollView.getScrollY(), 0), mImageViewHeight);
+
+            // changing position of ImageView
+            mHeader.setTranslationY(scrollY / 2);
+
+            // alpha you could set to ActionBar background
+            double alpha = (double)mScrollView.getScrollY()  - (double) mImageViewHeight;
+            alpha /= (double) mImageViewHeight;
+            //mButton5.setText(String.valueOf(alpha));
+            if(alpha > 0.85) {
+                mActionBar.setVisibility(View.VISIBLE);
+            } else {
+                mActionBar.setVisibility(View.INVISIBLE);
+            }
+
+        }
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -105,4 +176,5 @@ public class Home extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

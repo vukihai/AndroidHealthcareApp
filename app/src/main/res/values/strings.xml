@@ -14,4 +14,10 @@
     <string name="Default_fragment_home_text">Đây là fragment mặc định khi chạy</string>
     <string name="default_fragment_remind_text">Đây là fragment chứa các chức năng nhắc nhở</string>
     <string name="splash_icon">splash icon</string>
+    <string name="step_counter_home"><font size="20">ngày hôm nay bạn đã đi 0 bước!</font>\n\<font size="10">mục tiêu hôm nay: 100 bước!</font></string>
+    <string name="mystring">
+        &lt;b&gt; &lt;font size="15" color = "black"&gt;Ngày hôm nay bạn đã đi 0 bước &lt;/ font&gt;&lt;b&gt;
+        &lt;br /&gt;
+        &lt;small&gt;100 bước nữa để đạt mục tiêu &lt;/ b&gt;
+    </string>
 </resources>
