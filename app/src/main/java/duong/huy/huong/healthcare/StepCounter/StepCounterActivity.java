@@ -1,10 +1,15 @@
 package duong.huy.huong.healthcare.StepCounter;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import duong.huy.huong.healthcare.R;
 
@@ -23,5 +28,15 @@ public class StepCounterActivity extends AppCompatActivity {
         rotate.setDuration(14000);
         rotate.setRepeatCount(Animation.INFINITE);
         headerCircle.setAnimation(rotate);
+        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
+
     }
+        private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // call updateUI passing in our intent which is holding the data to display.
+            TextView t = (TextView) findViewById(R.id.num_step);
+            t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " Bước");
+        }
+    };
 }
