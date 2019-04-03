@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         transaction.commit();
     }
     public void stepCounterOnclick(View v) {
+        mStepCounterIntert = new Intent(this, StepCounterActivity.class);
+        startActivity(mStepCounterIntert);
+
+    }
+    public void routeTrackerOnclick(View v) {
         //mStepCounterIntert = new Intent(this, StepCounterActivity.class);
         //startActivity(mStepCounterIntert);
         mRouteTrackerIntent = new Intent(this, RouteTrackerActivity.class);
