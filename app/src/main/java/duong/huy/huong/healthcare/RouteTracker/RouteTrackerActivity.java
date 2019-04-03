@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,12 +39,14 @@ public class RouteTrackerActivity extends FragmentActivity implements
     private GoogleApiClient googleApiClient;
     private LatLng lastKnownLatLng;
     private boolean firstLat;
-
+    private TextView mTextView;
+    double distance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_tracker);
         firstLat = true;
+        distance = 0;
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -60,7 +63,6 @@ public class RouteTrackerActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-
         LatLng calymayor = new LatLng(19.345822, -99.152274);
         map.moveCamera(CameraUpdateFactory.newLatLng(calymayor));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(calymayor, 15));
@@ -82,6 +84,7 @@ public class RouteTrackerActivity extends FragmentActivity implements
         }
         map.setMyLocationEnabled(true);
 
+        mTextView = findViewById(R.id.textView);
     }
 
 
@@ -128,11 +131,19 @@ public class RouteTrackerActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
+        Location tmp = new Location("");
+        if(!firstLat) {
+            tmp.setLongitude(lastKnownLatLng.longitude);
+            tmp.setLatitude(lastKnownLatLng.latitude);
+        }
         lastKnownLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         if(firstLat) {
             map.moveCamera(CameraUpdateFactory.newLatLng(lastKnownLatLng));
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownLatLng, 15));
             firstLat = false;
+        } else {
+            distance += tmp.distanceTo(location);
+            mTextView.setText(String.valueOf(distance));
         }
         updateTrack();
     }
