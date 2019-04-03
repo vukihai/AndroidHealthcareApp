@@ -105,7 +105,7 @@ public class Home extends Fragment {
         RotateAnimation rotate = new RotateAnimation(0, 360,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                 0.5f);
-        rotate.setDuration(4000);
+        rotate.setDuration(8000);
         rotate.setRepeatCount(Animation.INFINITE);
         animationTarget.setAnimation(rotate);
 
