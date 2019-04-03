@@ -44,7 +44,7 @@
                         app:srcCompat="@drawable/icon" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/num_step"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -162,6 +162,16 @@
                     android:drawableStart="@drawable/ic_pause_circle_filled_black_24dp"
                     android:text="Tạm dừng" />
             </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

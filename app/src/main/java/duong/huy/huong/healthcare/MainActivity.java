@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
+import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
 
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.getSupportActionBar().hide();
 
-//        startService(new Intent(getBaseContext(), StepCounterSrv.class));
+        startService(new Intent(getBaseContext(), StepCounterSrv.class));
 //        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
 //        intent = new Intent("duong.huy.huong.stepcounterbroadcast");
 //
