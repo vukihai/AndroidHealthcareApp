@@ -8,7 +8,7 @@
     <color name="homeActionBar">#76BDEF</color>
     <color name="home_action_bar_color">#538D7E</color>
     <color name="home_background">#236C6F</color>
-    <color name="step_background">#87B879</color>
-    <color name="step_chart">#6bf3ad</color>
+    <color name="step_background">#00838F</color>
+    <color name="step_chart">#FFFFFF</color>
 
 </resources>

@@ -11,8 +11,7 @@
         style="@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/step_background"
-        >
+        android:background="@drawable/gradient">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,6 +53,7 @@
                         android:textColor="@color/common_google_signin_btn_text_dark_default"
                         android:textSize="28sp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
@@ -77,10 +77,10 @@
                         android:id="@+id/textVie2"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
-                        android:layout_weight="1"
                         android:layout_marginLeft="15sp"
-                        android:drawableStart="@drawable/ic_timer_black_24dp"
-                        android:gravity="start|center_vertical"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_stopwatch"
+                        android:gravity="start|center"
                         android:text=" 0 phút"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                         android:textSize="20sp"
@@ -88,11 +88,10 @@
 
                     <TextView
                         android:id="@+id/textVi2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="10dp"
                         android:layout_height="45dp"
-                        android:gravity="start|center_vertical"
                         android:layout_weight="1"
-                        android:layout_marginLeft="15sp"
+                        android:gravity="start|center_vertical"
                         android:text="|"
                         android:textAllCaps="false"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
@@ -103,9 +102,8 @@
                         android:id="@+id/textV2"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
-                        android:layout_marginLeft="15sp"
-                        android:drawableStart="@drawable/ic_straighten_black_24dp"
                         android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_location_on_road"
                         android:gravity="start|center_vertical"
                         android:text=" 0 km"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
@@ -116,9 +114,8 @@
                         android:id="@+id/text2"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
-                        android:layout_marginLeft="15sp"
-                        android:gravity="start|center_vertical"
                         android:layout_weight="1"
+                        android:gravity="start|center_vertical"
                         android:text="|"
                         android:textAllCaps="false"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
@@ -130,8 +127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
                         android:layout_weight="1"
-                        android:layout_marginLeft="15sp"
-                        android:drawableStart="@drawable/ic_whatshot_black_24dp"
+                        android:drawableStart="@drawable/ic_calories"
                         android:gravity="start|center_vertical"
                         android:text=" 0 calos"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
@@ -150,16 +146,19 @@
 
                 <Button
                     android:id="@+id/button"
-                    android:layout_width="190dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_directions_walk_black_24dp"
+                    android:drawableStart="@drawable/ic_target"
+                    android:background="@drawable/border_radius"
                     android:text="Đặt mục tiêu" />
 
                 <Button
                     android:id="@+id/button1"
-                    android:layout_width="190dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_pause_circle_filled_black_24dp"
+                    android:layout_marginLeft="10dp"
+                    android:drawableStart="@drawable/ic_pause"
+                    android:background="@drawable/border_radius"
                     android:text="Tạm dừng" />
             </LinearLayout>
 
@@ -167,6 +166,7 @@
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
                 android:layout_height="300dp">
+
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/chart1"
                     android:layout_width="match_parent"

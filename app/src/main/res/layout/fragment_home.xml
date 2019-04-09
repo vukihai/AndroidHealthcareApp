@@ -12,7 +12,8 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/step_chart">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,8 +28,8 @@
                 <FrameLayout
                     android:id="@+id/header"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/univers_header_height"
-                    android:background="@drawable/home_header_background">
+                    android:background="@color/home_action_bar_color"
+                    android:layout_height="@dimen/univers_header_height">
 
                     <ImageView
                         android:id="@+id/header_circle"
@@ -43,8 +44,9 @@
                         android:layout_height="251dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="0"
-                        android:textSize="@dimen/univers_header_bigo" />
+                        android:text="1000"
+                        android:textSize="@dimen/univers_header_bigo"
+                        android:textColor="@color/step_chart"/>
 
                     <TextView
                         android:id="@+id/textView5"
@@ -53,163 +55,84 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/header_text_margin"
                         android:text="0 bước | 0 calos"
-                        android:textSize="@dimen/univers_header_text_size" />
+                        android:textSize="@dimen/univers_header_text_size"
+                        android:textColor="@color/step_chart"/>
                 </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/univers_header_height"
-                    android:background="@color/home_background"
+                    android:background="@color/step_chart"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView3"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/white"
-                        android:drawableStart="@drawable/ic_notifications_black_24dp"
-                        android:drawableEnd="@drawable/ic_dashboard_black_24dp"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:onClick="stepCounterOnclick"
-                        android:text="TextView"
-                        android:textSize="@dimen/home_button_textsize" />
+                        android:layout_height="match_parent"
+                        android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/textVie"
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="@dimen/home_button_width"
+                            android:layout_height="@dimen/home_button_height"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/margin_large"
+                            android:background="@drawable/border_radius"
+                            android:drawableStart="@drawable/ic_walker"
+                            android:drawablePadding="@dimen/activity_vertical_margin"
+                            android:gravity="start|center_vertical"
+                            android:onClick="stepCounterOnclick"
+                            android:text="Bước chân"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                            android:textSize="@dimen/home_button_textsize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textVie"
+                            android:layout_width="@dimen/home_button_width"
+                            android:layout_height="@dimen/home_button_height"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/margin_large"
+                            android:background="@drawable/border_radius"
+                            android:drawableStart="@drawable/ic_destination"
+                            android:drawablePadding="@dimen/activity_vertical_margin"
+                            android:gravity="start|center_vertical"
+                            android:onClick="routeTrackerOnclick"
+                            android:text="Hành trình"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                            android:textSize="@dimen/home_button_textsize"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/white"
-                        android:drawableStart="@drawable/ic_notifications_black_24dp"
-                        android:drawableEnd="@drawable/ic_dashboard_black_24dp"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:onClick="routeTrackerOnclick"
-                        android:text="TextView"
-                        android:textSize="@dimen/home_button_textsize" />
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_marginBottom="55dp"
+                        android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/step_counter_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-                        android:drawableStart="@drawable/ic_notifications_black_24dp"
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|right|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
+                        <Button
+                            android:id="@+id/step_counter_btn"
+                            android:layout_width="@dimen/home_button_width"
+                            android:layout_height="@dimen/home_button_height"
+                            android:layout_margin="@dimen/margin_large"
+                            android:background="@drawable/border_radius"
+                            android:drawableStart="@drawable/ic_heart"
+                            android:drawablePadding="@dimen/activity_vertical_margin"
+                            android:gravity="start|right|center_vertical"
+                            android:text="Nhịp tim" />
 
-                    <Button
-                        android:id="@+id/step_counter_btn1"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
-
-                    <Button
-                        android:id="@+id/step_counter_btn2"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
-
-                    <Button
-                        android:id="@+id/step_counter_btn3"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
-
-                    <Button
-                        android:id="@+id/step_counter_btn4"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
-
-                    <Button
-                        android:id="@+id/step_counter_btn5"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
-
-                    <Button
-                        android:id="@+id/step_counter_btn6"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
-
-                    <Button
-                        android:id="@+id/step_counter_btn7"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/home_button_height"
-                        android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-
-                        android:drawableEnd="@android:drawable/arrow_down_float"
-                        android:drawableRight="@android:drawable/arrow_down_float"
-                        android:drawablePadding="@dimen/activity_vertical_margin"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/step_counter_home" />
+                        <Button
+                            android:id="@+id/step_counter_btn1"
+                            android:layout_width="@dimen/home_button_width"
+                            android:layout_height="@dimen/home_button_height"
+                            android:layout_margin="@dimen/margin_large"
+                            android:background="@drawable/border_radius"
+                            android:drawableStart="@drawable/ic_sleep"
+                            android:drawablePadding="@dimen/activity_vertical_margin"
+                            android:gravity="start|center_vertical"
+                            android:text="Giấc ngủ" />
+                    </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
@@ -218,7 +141,7 @@
     <FrameLayout
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_header_height"
+        android:layout_height="45dp"
         android:background="@color/home_action_bar_color">
 
         <TextView
@@ -226,8 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="0 bước | 0 calos"
+            android:text="| Heathcare |"
             android:textSize="@dimen/univers_header_text_size" />
     </FrameLayout>
-
 </FrameLayout>
