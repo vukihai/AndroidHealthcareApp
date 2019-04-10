@@ -96,9 +96,6 @@ public class Home extends Fragment {
         mActionBar.setVisibility(View.INVISIBLE);
 
         mStepCounter = (Button) view.findViewById(R.id.step_counter_btn);
-        mTextView = (TextView) view.findViewById(R.id.textView3);
-        mTextView.setText(Html.fromHtml(getResources().getString(R.string.mystring)),
-                TextView.BufferType.SPANNABLE);
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ScrollPositionObserver());
 
         ImageView animationTarget = (ImageView) view.findViewById(R.id.header_circle);

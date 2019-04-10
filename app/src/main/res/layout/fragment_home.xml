@@ -118,6 +118,7 @@
                             android:layout_margin="@dimen/margin_large"
                             android:background="@drawable/border_radius"
                             android:drawableStart="@drawable/ic_heart"
+                            android:onClick="heartRateOnclick"
                             android:drawablePadding="@dimen/activity_vertical_margin"
                             android:gravity="start|right|center_vertical"
                             android:text="Nhịp tim" />
