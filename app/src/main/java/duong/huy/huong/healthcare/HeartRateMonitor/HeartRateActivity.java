@@ -173,13 +173,14 @@ public class HeartRateActivity extends AppCompatActivity {
                 else {
                     rollavgtxt.setText("trung bình:" + Integer.toString(rollingAverage) + "..đo...");
                 }
-            if (imgAvg < rollingAverage && imgAvg > 220 && Math.abs(rollingAverage - vld) <=1 &&(lastBeat == 0 || System.currentTimeMillis()- lastBeat > 400)) {
+
+            if (imgAvg < rollingAverage && imgAvg > 220 && Math.abs(rollingAverage - vld) <=1 &&(lastBeat == 0 || System.currentTimeMillis()- lastBeat > 350)) {
                 newType = TYPE.RED;
                 if (newType != currentType) {
                     lastBeat = System.currentTimeMillis();
                     beats++;
                     beat.setText(String.valueOf(Integer.parseInt(beat.getText().toString()) + 1));
-                    if(Integer.parseInt(beat.getText().toString()) >=60) {
+                    if(Integer.parseInt(beat.getText().toString()) >=30) {
                         long ctime = System.currentTimeMillis() - startTime;
                         text.setText(String.valueOf((float)Integer.parseInt(beat.getText().toString()) / ctime * 60000)+" bpm");
                         beat.setText(String.valueOf(0));
@@ -190,6 +191,7 @@ public class HeartRateActivity extends AppCompatActivity {
             } else if (imgAvg >= rollingAverage && imgAvg > 220) {
                 newType = TYPE.GREEN;
             }
+            if(System.currentTimeMillis()- lastBeat > 1400) beat.setText(String.valueOf(0));
 
             if (averageIndex == averageArraySize) averageIndex = 0;
             averageArray[averageIndex] = imgAvg;
