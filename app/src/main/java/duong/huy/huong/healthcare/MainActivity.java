@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.getSupportActionBar().hide();
 
-        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
+        //registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
 //        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
 //        intent = new Intent("duong.huy.huong.stepcounterbroadcast");
 //
