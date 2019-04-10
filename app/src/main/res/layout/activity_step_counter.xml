@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StepCounter.StepCounterActivity">
-
     <ScrollView
         android:id="@+id/scrollView"
         style="@style/AppTheme"
@@ -150,6 +149,7 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_target"
                     android:background="@drawable/border_radius"
+                    android:onClick="setStepGoal"
                     android:text="Đặt mục tiêu" />
 
                 <Button

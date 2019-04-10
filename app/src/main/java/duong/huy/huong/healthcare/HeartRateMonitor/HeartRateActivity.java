@@ -143,7 +143,6 @@ public class HeartRateActivity extends AppCompatActivity {
                     averageArrayCnt++;
                 }
             }
-
             int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
             TYPE newType = currentType;
 

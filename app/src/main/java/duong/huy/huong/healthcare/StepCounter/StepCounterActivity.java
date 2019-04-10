@@ -1,17 +1,22 @@
 package duong.huy.huong.healthcare.StepCounter;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +39,8 @@ import java.util.List;
 
 import duong.huy.huong.healthcare.R;
 import duong.huy.huong.healthcare.db.DbManager;
+import duong.huy.huong.healthcare.db.Step_Goal;
+import duong.huy.huong.healthcare.db.Step_GoalDao;
 
 public class StepCounterActivity extends AppCompatActivity {
     ImageView headerCircle;
@@ -41,6 +48,35 @@ public class StepCounterActivity extends AppCompatActivity {
     Button srvButton;
     Date startDate;
     Intent srv;
+    String step_goal;
+    TextView goal;
+    public void setStepGoal(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("đặt mục tiêu");
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.set_step_goal, (ViewGroup) findViewById(android.R.id.content), false);
+        final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+        builder.setView(viewInflated);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                step_goal = input.getText().toString();
+                Step_Goal mStep_goal = new Step_Goal();
+                mStep_goal.setstep_goal(String.valueOf(step_goal));
+                mStep_goal.setstep_goal_date(String.valueOf(Calendar.getInstance().getTime().getTime()));
+                Step_GoalDao.insertRecord(mStep_goal);
+                goal.setText("mục tiêu hôm nay: " + step_goal + " bước");
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
     public void startSrv(View v) {
         if(!isMyServiceRunning(StepCounterSrv.class)) {
             // srv chua chay
@@ -62,6 +98,14 @@ public class StepCounterActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         srv = new Intent(getBaseContext(), StepCounterSrv.class);
+
+        goal = (TextView) findViewById(R.id.textView);
+        ArrayList<Step_Goal> sg = Step_GoalDao.loadAllRecords();
+        if(sg.size() >=1) {
+            goal.setText("mục tiêu hôm nay: " + String.valueOf(sg.get(0).getstep_goal()) + " bước");
+        } else {
+            goal.setText("mục tiêu hôm nay: 10.000 bước");
+        }
 
         headerCircle = (ImageView) findViewById(R.id.circle_step);
         RotateAnimation rotate = new RotateAnimation(0, 360,
