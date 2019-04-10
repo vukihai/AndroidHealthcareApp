@@ -1,5 +1,6 @@
 package duong.huy.huong.healthcare.StepCounter;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,11 +8,14 @@ import android.content.IntentFilter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -22,19 +26,42 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import duong.huy.huong.healthcare.R;
+import duong.huy.huong.healthcare.db.DbManager;
 
 public class StepCounterActivity extends AppCompatActivity {
     ImageView headerCircle;
     LineChart mLineChart;
+    Button srvButton;
+    Date startDate;
+    Intent srv;
+    public void startSrv(View v) {
+        if(!isMyServiceRunning(StepCounterSrv.class)) {
+            // srv chua chay
+            Toast.makeText(this, "start srv", Toast.LENGTH_LONG).show();
+            startService(srv);
+            startDate = Calendar.getInstance().getTime();
+            srvButton.setText("Tạm dừng");
+        } else {
+            Toast.makeText(this, "stop srv", Toast.LENGTH_LONG).show();
+            stopService(srv);
+            srvButton.setText("Chạy bộ đếm");
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DbManager.setConfig(this);
         setContentView(R.layout.activity_step_counter);
         getSupportActionBar().hide();
+
+        srv = new Intent(getBaseContext(), StepCounterSrv.class);
 
         headerCircle = (ImageView) findViewById(R.id.circle_step);
         RotateAnimation rotate = new RotateAnimation(0, 360,
@@ -43,10 +70,30 @@ public class StepCounterActivity extends AppCompatActivity {
         rotate.setDuration(14000);
         rotate.setRepeatCount(Animation.INFINITE);
         headerCircle.setAnimation(rotate);
-        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
 
+        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
+        srvButton = (Button) findViewById(R.id.button1);
+        if(!isMyServiceRunning(StepCounterSrv.class)) {
+            srvButton.setText("Chạy bộ đếm");
+        } else {
+            srvButton.setText("Tạm dừng");
+        }
         mLineChart = (LineChart) findViewById(R.id.chart1);
         drawChart();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -54,6 +101,18 @@ public class StepCounterActivity extends AppCompatActivity {
             // call updateUI passing in our intent which is holding the data to display.
             TextView t = (TextView) findViewById(R.id.num_step);
             t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " Bước");
+            TextView t1 = (TextView) findViewById(R.id.textView2);
+            t1.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calos");
+            TextView t2 = (TextView) findViewById(R.id.textVie2);
+            String tmp = intent.getStringExtra("time");
+            int time = Integer.parseInt(tmp);
+            if(time/60000 == 0) {
+                t2.setText(String.valueOf(time/1000) + " giây");
+            } else {
+                t2.setText(String.valueOf(time/60000) + " phút");
+            }
+
+
         }
 
     };

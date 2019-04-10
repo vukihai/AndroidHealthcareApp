@@ -43,7 +43,21 @@ public class StepDao extends DbManager {
 
         return step;
     }
+    public static Step loadRecordByStep_Date(String date)  {
+        database_open();
+        Cursor cursor = database.query(DbSchema.Table_Step.TABLE_NAME,allColumns,  "step_date = ?" , new String[] { String.valueOf(date) } , null, null, null,null);
 
+        if (cursor != null)
+            cursor.moveToFirst();
+        if(cursor.getCount() <1) return null;
+        Step step = new Step();
+        step = cursorToStep(cursor);
+
+        cursor.close();
+        database_close();
+
+        return step;
+    }
     public static ArrayList<Step> loadAllRecords() {
         ArrayList<Step> stepList = new ArrayList<Step>();
         database_open();

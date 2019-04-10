@@ -1,6 +1,10 @@
 package duong.huy.huong.healthcare;
 
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,10 +19,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
+import duong.huy.huong.healthcare.db.DbManager;
+import duong.huy.huong.healthcare.db.Step;
+import duong.huy.huong.healthcare.db.StepDao;
+
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
  * Và thanh navigation Bar để lựa chọn các fragment.
@@ -74,6 +85,15 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         transaction.addToBackStack(null);
         transaction.commit();
     }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     public void stepCounterOnclick(View v) {
         mStepCounterIntert = new Intent(this, StepCounterActivity.class);
         startActivity(mStepCounterIntert);
@@ -104,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.getSupportActionBar().hide();
 
-        startService(new Intent(getBaseContext(), StepCounterSrv.class));
+        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
 //        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
 //        intent = new Intent("duong.huy.huong.stepcounterbroadcast");
 //
@@ -142,4 +162,32 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     public void onFragmentInteraction(Uri uri) {
 
     }
+//    public void testDB(){
+//        Step st = StepDao.loadRecordByStep_Date(String.valueOf(Calendar.getInstance().getTime().getTime()/60/1000/24));
+//        if(st == null) {
+//            TextView t = (TextView) findViewById(R.id.textView7);
+//            t.setText("null");
+//        } else {
+//            TextView t = (TextView) findViewById(R.id.textView7);
+//            t.setText(st.getstep());
+//        }
+//
+//
+//
+//    }
+
+    /**
+     * Nhận broadcast bước chân
+     */
+//    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            // call updateUI passing in our intent which is holding the data to display.
+//            TextView t = (TextView) findViewById(R.id.textView7);
+//            t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " Bước");
+//            testDB();
+//            //if(!isMyServiceRunning())
+//        }
+//
+//    };
 }

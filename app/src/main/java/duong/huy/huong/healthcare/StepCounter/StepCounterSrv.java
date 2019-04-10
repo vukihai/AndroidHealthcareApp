@@ -9,24 +9,43 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.IBinder;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import duong.huy.huong.healthcare.db.DbManager;
+import duong.huy.huong.healthcare.db.Step;
+import duong.huy.huong.healthcare.db.StepDao;
+
 public class StepCounterSrv extends Service implements SensorEventListener, StepListener {
     SensorManager sensorManager;
     Sensor accel; // cam bien gia toc
     int numSteps; // so buoc di
     boolean isStopped;
     Intent intent;
+    Step mStep;
+    StepDao mStepDao;
     StepDetector simpleStepDetector;
+    Date startDate;
     private final Handler handler = new Handler();
     public StepCounterSrv() {
     }
     @Override
     public void onCreate() {
         super.onCreate();
+        DbManager.setConfig(this);
+        startDate = Calendar.getInstance().getTime();
         intent = new Intent("duong.huy.huong.stepcounterbroadcast");
+        this.isStopped = false;
+    }
+    @Override
+    public void onDestroy() {
+        this.isStopped = true;
     }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -40,6 +59,8 @@ public class StepCounterSrv extends Service implements SensorEventListener, Step
 
         handler.removeCallbacks(updateBroadcastData);
         handler.post(updateBroadcastData); // 0 seconds
+        handler.removeCallbacks(updateDB);
+        handler.post(updateDB);
         return START_STICKY;
     }
     private Runnable updateBroadcastData = new Runnable() {
@@ -48,19 +69,32 @@ public class StepCounterSrv extends Service implements SensorEventListener, Step
                 // Call the method that broadcasts the data to the Activity..
                 broadcastSensorValue();
                 // Call "handler.postDelayed" again, after a specified delay.
-                handler.postDelayed(this, 1000);
+                if(!isStopped)
+                    handler.postDelayed(this, 1000);
             }
         }
     };
+    private Runnable updateDB = new Runnable() {
+        public void run() {
+            if (!isStopped) {
+                mStep = StepDao.loadRecordByStep_Date(String.valueOf(Calendar.getInstance().getTime().getTime()/1000/60/24));
+                if(mStep == null) {
+                    mStep = new Step();
+                    mStep.setstep(String.valueOf(numSteps));
+                    mStep.setstep_date(String.valueOf(Calendar.getInstance().getTime().getTime()/1000/60/24));
+                    StepDao.insertRecord(mStep);
+                } else {
+                    mStep.setstep(String.valueOf(numSteps));
+                    StepDao.updateRecord(mStep);
+                }
+                handler.postDelayed(this, 10000);
+            }
+        }
+    };
+
     private void broadcastSensorValue() {
-        //Log.d(TAG, "Data to Activity");
-        // add step counter to intent.
         intent.putExtra("numSteps", String.valueOf(numSteps));
-//        intent.putExtra("Counted_Step", String.valueOf(newStepCounter));
-//        // add step detector to intent.
-//        intent.putExtra("Detected_Step_Int", currentStepsDetected);
-//        intent.putExtra("Detected_Step", String.valueOf(currentStepsDetected));
-//        // call sendBroadcast with that intent  - which sends a message to whoever is registered to receive it.
+        intent.putExtra("time", String.valueOf(Calendar.getInstance().getTime().getTime() - startDate.getTime()));
         sendBroadcast(intent);
     }
     @Override
