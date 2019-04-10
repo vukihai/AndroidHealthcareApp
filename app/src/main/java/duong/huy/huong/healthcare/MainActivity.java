@@ -24,6 +24,7 @@ import java.util.Calendar;
 
 import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
+import duong.huy.huong.healthcare.SleepTracker.SleepTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
 import duong.huy.huong.healthcare.db.DbManager;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     Intent mStepCounterIntert;
     Intent mRouteTrackerIntent;
     Intent mHeartRateIntent;
+    Intent mSleepTrackerIntent;
     /**
      * Bắt sự kiện click thanh điều hướng chân màn hình.
      */
@@ -102,6 +104,11 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     public void heartRateOnclick(View v) {
         mHeartRateIntent = new Intent(this, HeartRateActivity.class);
         startActivity(mHeartRateIntent);
+
+    }
+    public void sleepTrackerOnclick(View v) {
+        mSleepTrackerIntent = new Intent(this, SleepTrackerActivity.class);
+        startActivity(mSleepTrackerIntent);
 
     }
     public void routeTrackerOnclick(View v) {
