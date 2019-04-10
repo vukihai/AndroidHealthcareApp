@@ -19,7 +19,6 @@ import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
-
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
  * Và thanh navigation Bar để lựa chọn các fragment.
