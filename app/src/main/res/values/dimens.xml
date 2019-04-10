@@ -11,10 +11,11 @@
     <dimen name="univers_header_bigo">35sp</dimen>
     <dimen name="header_text_margin">30sp</dimen>
     <dimen name="univers_header_circle">250dp</dimen>
-    <!-- Padding -->
+    <!-- Margin -->
     <dimen name="margin_tiny">2dp</dimen>
     <dimen name="margin_small">4dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
     <dimen name="margin_large">15dp</dimen>
+    <dimen name="margin_very_large">25dp</dimen>
 
 </resources>
