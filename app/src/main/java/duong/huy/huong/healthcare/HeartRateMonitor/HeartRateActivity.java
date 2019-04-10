@@ -191,7 +191,10 @@ public class HeartRateActivity extends AppCompatActivity {
             } else if (imgAvg >= rollingAverage && imgAvg > 220) {
                 newType = TYPE.GREEN;
             }
-            if(System.currentTimeMillis()- lastBeat > 1400) beat.setText(String.valueOf(0));
+            if(System.currentTimeMillis()- lastBeat > 1400) {
+                beat.setText(String.valueOf(0));
+                startTime = System.currentTimeMillis();
+            }
 
             if (averageIndex == averageArraySize) averageIndex = 0;
             averageArray[averageIndex] = imgAvg;
