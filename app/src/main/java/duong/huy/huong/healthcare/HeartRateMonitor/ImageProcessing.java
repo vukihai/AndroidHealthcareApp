@@ -55,6 +55,7 @@ public abstract class ImageProcessing {
         final int frameSize = width * height;
 
         int sum = decodeYUV420SPtoRedSum(yuv420sp, width, height);
+
         return ( sum / frameSize);
     }
 }

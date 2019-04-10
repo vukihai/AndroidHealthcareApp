@@ -143,7 +143,7 @@ public class RouteTrackerActivity extends FragmentActivity implements
             firstLat = false;
         } else {
             distance += tmp.distanceTo(location);
-            mTextView.setText(String.valueOf(distance));
+            mTextView.setText(String.valueOf(distance) + " m");
         }
         updateTrack();
     }

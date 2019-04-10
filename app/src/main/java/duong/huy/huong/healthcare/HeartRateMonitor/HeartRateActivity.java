@@ -34,7 +34,7 @@ public class HeartRateActivity extends AppCompatActivity {
     private static PowerManager.WakeLock wakeLock = null;
 
     private static int averageIndex = 0;
-    private static final int averageArraySize = 4;
+    private static final int averageArraySize = 100;
     private static final int[] averageArray = new int[averageArraySize];
 
     public static enum TYPE {
@@ -112,6 +112,8 @@ public class HeartRateActivity extends AppCompatActivity {
         camera = null;
     }
 
+
+
     private static android.hardware.Camera.PreviewCallback previewCallback = new android.hardware.Camera.PreviewCallback() {
 
         /**
@@ -129,6 +131,7 @@ public class HeartRateActivity extends AppCompatActivity {
             int height = size.height;
 
             int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(), height, width);
+
             // Log.i(TAG, "imgAvg="+imgAvg);
             if (imgAvg == 0 || imgAvg == 255) {
                 processing.set(false);
@@ -147,7 +150,9 @@ public class HeartRateActivity extends AppCompatActivity {
             TYPE newType = currentType;
 
             imgavgtxt.setText("image average:"+ Integer.toString(imgAvg));
-            rollavgtxt.setText("rolling average:"+ Integer.toString(rollingAverage));
+            if(rollingAverage < 220) rollavgtxt.setText("trung bình:"+ Integer.toString(rollingAverage) + " ...chờ....");
+            else
+                rollavgtxt.setText("trung bình:"+ Integer.toString(rollingAverage) + " ok");
             if (imgAvg < rollingAverage && imgAvg > 220) {
                 newType = TYPE.RED;
                 if (newType != currentType) {
@@ -167,38 +172,39 @@ public class HeartRateActivity extends AppCompatActivity {
                 currentType = newType;
                 image.postInvalidate();
             }
+            if(rollingAverage > 220) {
+                long endTime = System.currentTimeMillis();
+                double totalTimeInSecs = (endTime - startTime) / 1000d;
+                if (totalTimeInSecs >= 10) {
+                    double bps = (beats / totalTimeInSecs);
+                    int dpm = (int) (bps * 60d);
+                    if (dpm < 30 || dpm > 180) {
+                        startTime = System.currentTimeMillis();
+                        beats = 0;
+                        processing.set(false);
+                        return;
+                    }
 
-            long endTime = System.currentTimeMillis();
-            double totalTimeInSecs = (endTime - startTime) / 1000d;
-            if (totalTimeInSecs >= 10) {
-                double bps = (beats / totalTimeInSecs);
-                int dpm = (int) (bps * 60d);
-                if (dpm < 30 || dpm > 180) {
+                    // Log.d(TAG,
+                    // "totalTimeInSecs="+totalTimeInSecs+" beats="+beats);
+
+                    if (beatsIndex == beatsArraySize) beatsIndex = 0;
+                    beatsArray[beatsIndex] = dpm;
+                    beatsIndex++;
+
+                    int beatsArrayAvg = 0;
+                    int beatsArrayCnt = 0;
+                    for (int i = 0; i < beatsArray.length; i++) {
+                        if (beatsArray[i] > 0) {
+                            beatsArrayAvg += beatsArray[i];
+                            beatsArrayCnt++;
+                        }
+                    }
+                    int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
+                    text.setText(String.valueOf(beatsAvg)+" bpm");
                     startTime = System.currentTimeMillis();
                     beats = 0;
-                    processing.set(false);
-                    return;
                 }
-
-                // Log.d(TAG,
-                // "totalTimeInSecs="+totalTimeInSecs+" beats="+beats);
-
-                if (beatsIndex == beatsArraySize) beatsIndex = 0;
-                beatsArray[beatsIndex] = dpm;
-                beatsIndex++;
-
-                int beatsArrayAvg = 0;
-                int beatsArrayCnt = 0;
-                for (int i = 0; i < beatsArray.length; i++) {
-                    if (beatsArray[i] > 0) {
-                        beatsArrayAvg += beatsArray[i];
-                        beatsArrayCnt++;
-                    }
-                }
-                int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
-                text.setText(String.valueOf(beatsAvg)+" bpm");
-                startTime = System.currentTimeMillis();
-                beats = 0;
             }
             processing.set(false);
         }

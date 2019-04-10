@@ -102,7 +102,7 @@ public class StepCounterActivity extends AppCompatActivity {
         goal = (TextView) findViewById(R.id.textView);
         ArrayList<Step_Goal> sg = Step_GoalDao.loadAllRecords();
         if(sg.size() >=1) {
-            goal.setText("mục tiêu hôm nay: " + String.valueOf(sg.get(0).getstep_goal()) + " bước");
+            goal.setText("mục tiêu hôm nay: " + String.valueOf(sg.get(sg.size()-1).getstep_goal()) + " bước");
         } else {
             goal.setText("mục tiêu hôm nay: 10.000 bước");
         }
