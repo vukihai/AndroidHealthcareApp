@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtInfo"
+        android:layout_width="242dp"
+        android:layout_height="47dp"
+        android:autoSizeTextType="uniform"
+        android:text="Thông Tin Người Dùng"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="20dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="491dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="329dp"
+        android:autoSizeTextType="uniform"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:paddingTop="100dp"
+        android:paddingBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtInfo"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/edName"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Họ và Tên" />
+
+        <EditText
+            android:id="@+id/edBirthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date"
+            android:text="Ngày Sinh" />
+
+        <LinearLayout
+            android:layout_width="339dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtGioitinh"
+                android:layout_width="128dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+
+                android:text="Giới Tính"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="19dp" />
+
+            <CheckBox
+                android:id="@+id/cbNam"
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nam" />
+
+            <CheckBox
+                android:id="@+id/cbNu"
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nữ" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Chiều Cao" />
+
+        <EditText
+            android:id="@+id/edWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Cân Nặng" />
+
+        <EditText
+            android:id="@+id/edStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Tình Trạng Sức Khỏe" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="149dp"
+            android:layout_height="62dp"
+            android:text="Cập Nhật" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
