@@ -1,10 +1,8 @@
 package duong.huy.huong.healthcare;
 
 import android.app.ActivityManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,29 +12,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.SleepTracker.SleepTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
-import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
-import duong.huy.huong.healthcare.db.DbManager;
-import duong.huy.huong.healthcare.db.Step;
-import duong.huy.huong.healthcare.db.StepDao;
 
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
  * Và thanh navigation Bar để lựa chọn các fragment.
  *
  */
-public class MainActivity extends AppCompatActivity implements Home.OnFragmentInteractionListener, Remind.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Home.OnFragmentInteractionListener, Remind.OnFragmentInteractionListener,UserInfoFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     //StepCounterSrv StepCountingService;
@@ -69,8 +57,9 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
                     loadFragment(mFragment);
 
                     return true;
-                case R.id.navigation_notifications:
-                    //mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_user_info:
+                    mFragment = new UserInfoFragment();
+                    loadFragment(mFragment);
                     return true;
             }
             return false;
