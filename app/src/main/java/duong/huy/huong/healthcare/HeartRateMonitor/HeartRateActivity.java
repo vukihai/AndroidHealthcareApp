@@ -1,42 +1,68 @@
 package duong.huy.huong.healthcare.HeartRateMonitor;
 
+import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
-import android.os.PowerManager;
-import android.support.v7.app.AppCompatActivity;
+import android.hardware.Camera.PreviewCallback;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.concurrent.atomic.AtomicBoolean;
+import android.widget.Toast;
 
 import duong.huy.huong.healthcare.R;
+import duong.huy.huong.healthcare.db.Heart_Rate;
+import duong.huy.huong.healthcare.db.Heart_RateDao;
 
-public class HeartRateActivity extends AppCompatActivity {
+
+/**
+ * This class extends Activity to handle a picture preview, process the preview
+ * for a red values and determine a heart beat.
+ *
+ * @author Justin Wetherell <phishman3579@gmail.com>
+ */
+public class HeartRateActivity extends Activity {
+
     private static final String TAG = "HeartRateMonitor";
     private static final AtomicBoolean processing = new AtomicBoolean(false);
 
+    private static SurfaceView preview = null;
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
-    @SuppressLint("StaticFieldLeak")
+
     private static View image = null;
     @SuppressLint("StaticFieldLeak")
-    private static TextView text = null;
+    private static ImageView beatImg = null; // hinh trai tim
     @SuppressLint("StaticFieldLeak")
-    private static TextView imgavgtxt = null;
+    private static TextView heartRate = null; // textview hien nhip tim
     @SuppressLint("StaticFieldLeak")
-    private static TextView rollavgtxt = null;
+    private static TextView time = null; // textview hien thoi gian
     @SuppressLint("StaticFieldLeak")
-    private static TextView beat = null;
+    private static TextView bmpText = null; // textview hien thoi gian
+    private static boolean onBeat = false;
+    private static boolean started = false;
+    private static long lastBeatTime = 0;
 
-    private static PowerManager.WakeLock wakeLock = null;
+    private static TextView text = null;
+
+    private static WakeLock wakeLock = null;
 
     private static int averageIndex = 0;
-    private static final int averageArraySize = 50;
+    private static final int averageArraySize = 7;
     private static final int[] averageArray = new int[averageArraySize];
 
     public static enum TYPE {
@@ -54,26 +80,27 @@ public class HeartRateActivity extends AppCompatActivity {
     private static final int[] beatsArray = new int[beatsArraySize];
     private static double beats = 0;
     private static long startTime = 0;
-    private static long lastBeat = 0;
 
     /**
      * {@inheritDoc}
      */
+    @SuppressLint("InvalidWakeLockTag")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heart_rate);
-
-        SurfaceView preview = (SurfaceView) findViewById(R.id.preview);
+        beatImg = (ImageView) findViewById(R.id.beat);
+        heartRate = (TextView) findViewById(R.id.heart_rate);
+        time = (TextView) findViewById(R.id.time);
+        preview = (SurfaceView) findViewById(R.id.preview);
+        bmpText = (TextView) findViewById(R.id.bmpText);
         previewHolder = preview.getHolder();
         previewHolder.addCallback(surfaceCallback);
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         image = findViewById(R.id.image);
-        text = findViewById(R.id.text);
-        imgavgtxt = findViewById(R.id.img_avg_text);
-        rollavgtxt = findViewById(R.id.rollavg_text);
-        beat = findViewById(R.id.textView9);
+        text = (TextView) findViewById(R.id.text);
+
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
     }
@@ -93,7 +120,7 @@ public class HeartRateActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        wakeLock.acquire(10*60*1000L /*10 minutes*/);
+        wakeLock.acquire();
 
         camera = Camera.open();
 
@@ -115,28 +142,20 @@ public class HeartRateActivity extends AppCompatActivity {
         camera = null;
     }
 
-
-
-    private static android.hardware.Camera.PreviewCallback previewCallback = new android.hardware.Camera.PreviewCallback() {
+    private static PreviewCallback previewCallback = new PreviewCallback() {
 
         /**
          * {@inheritDoc}
          */
         @Override
         public void onPreviewFrame(byte[] data, Camera cam) {
-
             if (data == null) throw new NullPointerException();
             Camera.Size size = cam.getParameters().getPreviewSize();
             if (size == null) throw new NullPointerException();
-
             if (!processing.compareAndSet(false, true)) return;
-
             int width = size.width;
             int height = size.height;
-
             int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(), height, width);
-
-            // Log.i(TAG, "imgAvg="+imgAvg);
             if (imgAvg == 0 || imgAvg == 255) {
                 processing.set(false);
                 return;
@@ -150,50 +169,50 @@ public class HeartRateActivity extends AppCompatActivity {
                     averageArrayCnt++;
                 }
             }
-            int validateAA = 0;
-            int validateCnt = 0;
-            for (int i = 0; i < averageArray.length/2 -1 ; i++) {
-                if (averageArray[averageArray.length-1-i] > 0) {
-                    validateAA += averageArray[i];
-                    validateCnt++;
-                }
-            }
-            int vld = (validateCnt > 0) ? (validateAA / validateCnt) : 0;
             int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
             TYPE newType = currentType;
+            if(started) {
+                time.setText("Thời gian đo:" + String.valueOf((System.currentTimeMillis() - startTime)/1000)+" s");
+            }
 
-            imgavgtxt.setText("image average:"+ Integer.toString(imgAvg));
-            if(rollingAverage < 220) rollavgtxt.setText("trung bình:"+ Integer.toString(rollingAverage) + " ...chờ....");
-            else
-                if(Math.abs(rollingAverage - vld) >1){
-                    rollavgtxt.setText("trung bình:"+ Integer.toString(rollingAverage) + "..ready...");
-                    beat.setText(String.valueOf(0));
-                    startTime = System.currentTimeMillis();
-                }
-                else {
-                    rollavgtxt.setText("trung bình:" + Integer.toString(rollingAverage) + "..đo...");
-                }
-
-            if (imgAvg < rollingAverage && imgAvg > 220 && Math.abs(rollingAverage - vld) <=1 &&(lastBeat == 0 || System.currentTimeMillis()- lastBeat > 350)) {
+            if (imgAvg < rollingAverage && imgAvg > 180) {
                 newType = TYPE.RED;
-                if (newType != currentType) {
-                    lastBeat = System.currentTimeMillis();
+                if (onBeat) {
+                    if(lastBeatTime != 0) {
+                        long curTime = System.currentTimeMillis();
+                        long step =  curTime- lastBeatTime;
+                        if (step < 600) {
+                            return;
+                        } else
+                            lastBeatTime = curTime;
+                    }
                     beats++;
-                    beat.setText(String.valueOf(Integer.parseInt(beat.getText().toString()) + 1));
-                    if(Integer.parseInt(beat.getText().toString()) >=30) {
-                        long ctime = System.currentTimeMillis() - startTime;
-                        text.setText(String.valueOf((float)Integer.parseInt(beat.getText().toString()) / ctime * 60000)+" bpm");
-                        beat.setText(String.valueOf(0));
+                    if(!started && beats == 4) {
+                        started =true;
                         startTime = System.currentTimeMillis();
                     }
+                    if(beats == 44) {
+                        long endTime = System.currentTimeMillis();
+                        double totalTimeInSecs = (endTime - startTime) / 1000d;
+                        double bps = ((beats-4) / totalTimeInSecs);
+                        int dpm = (int) (bps * 60d);
+                        heartRate.setText(String.valueOf(dpm));
+                        bmpText.setText("BMP");
+                        Heart_Rate mHeart_rate = new Heart_Rate();
+                        mHeart_rate.setheart_rate(String.valueOf(dpm));
+                        mHeart_rate.sethr_date(String.valueOf(Calendar.getInstance().getTime().getTime()));
+                        Heart_RateDao.insertRecord(mHeart_rate);
+                    }
+                    if(beats < 44 ){
+                        if(beats >=4) heartRate.setText(String.valueOf((int)(beats-4)));
+                    }
+                    beatImg.setImageResource(R.drawable.green_icon);
+                    onBeat = false;
                     // Log.d(TAG, "BEAT!! beats="+beats);
                 }
-            } else if (imgAvg >= rollingAverage && imgAvg > 220) {
-                newType = TYPE.GREEN;
-            }
-            if(System.currentTimeMillis()- lastBeat > 1400) {
-                beat.setText(String.valueOf(0));
-                startTime = System.currentTimeMillis();
+            } else if (imgAvg > rollingAverage && imgAvg > 180) {
+                onBeat = true;
+                beatImg.setImageResource(R.drawable.red_icon);
             }
 
             if (averageIndex == averageArraySize) averageIndex = 0;
@@ -201,44 +220,43 @@ public class HeartRateActivity extends AppCompatActivity {
             averageIndex++;
 
             // Transitioned from one state to another to the same
-            if (newType != currentType) {
-                currentType = newType;
-                image.postInvalidate();
-            }
-//            if(rollingAverage > 220 &&Math.abs(rollingAverage - vld) <=1) {
-//                long endTime = System.currentTimeMillis();
-//                double totalTimeInSecs = (endTime - startTime) / 1000d;
-//                if (totalTimeInSecs >= 10) {
-//                    double bps = (beats / totalTimeInSecs);
-//                    int dpm = (int) (bps * 60d);
-//                    if (dpm < 30 || dpm > 180) {
-//                        startTime = System.currentTimeMillis();
-//                        beats = 0;
-//                        processing.set(false);
-//                        return;
-//                    }
-//
-//                    // Log.d(TAG,
-//                    // "totalTimeInSecs="+totalTimeInSecs+" beats="+beats);
-//
-//                    if (beatsIndex == beatsArraySize) beatsIndex = 0;
-//                    beatsArray[beatsIndex] = dpm;
-//                    beatsIndex++;
-//
-//                    int beatsArrayAvg = 0;
-//                    int beatsArrayCnt = 0;
-//                    for (int i = 0; i < beatsArray.length; i++) {
-//                        if (beatsArray[i] > 0) {
-//                            beatsArrayAvg += beatsArray[i];
-//                            beatsArrayCnt++;
-//                        }
-//                    }
-//                    int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
-//                    text.setText(String.valueOf(beatsAvg)+" bpm");
-//                    startTime = System.currentTimeMillis();
-//                    beats = 0;
-//                }
+//            if (newType != currentType) {
+//                currentType = newType;
+//                beatImg.setImageResource(R.drawable.green_icon);
 //            }
+
+            long endTime = System.currentTimeMillis();
+            double totalTimeInSecs = (endTime - startTime) / 1000d;
+            if (totalTimeInSecs >= 10) {
+                double bps = (beats / totalTimeInSecs);
+                int dpm = (int) (bps * 60d);
+                if (dpm < 30 || dpm > 180) {
+                    //startTime = System.currentTimeMillis();
+                    //beats = 0;
+                    processing.set(false);
+                    return;
+                }
+
+                // Log.d(TAG,
+                // "totalTimeInSecs="+totalTimeInSecs+" beats="+beats);
+
+                if (beatsIndex == beatsArraySize) beatsIndex = 0;
+                beatsArray[beatsIndex] = dpm;
+                beatsIndex++;
+
+                int beatsArrayAvg = 0;
+                int beatsArrayCnt = 0;
+                for (int i = 0; i < beatsArray.length; i++) {
+                    if (beatsArray[i] > 0) {
+                        beatsArrayAvg += beatsArray[i];
+                        beatsArrayCnt++;
+                    }
+                }
+                int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
+                //text.setText(String.valueOf(beatsAvg));
+               // startTime = System.currentTimeMillis();
+                //beats = 0;
+            }
             processing.set(false);
         }
     };
@@ -254,7 +272,7 @@ public class HeartRateActivity extends AppCompatActivity {
                 camera.setPreviewDisplay(previewHolder);
                 camera.setPreviewCallback(previewCallback);
             } catch (Throwable t) {
-                //Log.e("Preview-surfaceCallback", "Exception in setPreviewDisplay()", t);
+                //Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
             }
         }
 
@@ -268,7 +286,7 @@ public class HeartRateActivity extends AppCompatActivity {
             Camera.Size size = getSmallestPreviewSize(width, height, parameters);
             if (size != null) {
                 parameters.setPreviewSize(size.width, size.height);
-                //Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
+             //   Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
             }
             camera.setParameters(parameters);
             camera.startPreview();
@@ -301,5 +319,61 @@ public class HeartRateActivity extends AppCompatActivity {
 
         return result;
     }
+    public static void startBtnOnclick(View v) {
+        started = false;
+        beats = 0;
+        bmpText.setText("");
+        time.setText("Sẵn sàng đo....");
+    }
+    public void beatHisOnclick(View v) {
+        Intent mIntent = new Intent(this, BeatHistoryActivity.class);
+        startActivity(mIntent);
+    }
+    private static Bitmap tobw(Bitmap src)
+    {
+        int width, height;
+        height = src.getHeight();
+        width = src.getWidth();
+        Bitmap dest = Bitmap.createBitmap(
+                src.getWidth(), src.getHeight(), src.getConfig());
+
+        for(int x = 0; x < src.getWidth(); x++){
+            for(int y = 0; y < src.getHeight(); y++){
+
+                int pixel = src.getPixel(x, y);
+
+                //get grayscale value
+                int gray = (pixel & 0xFF);
+                int newPixel;
+                //get binary value
+                if(gray < 56){
+                    newPixel = 0;
+                } else{
+                    newPixel = 16777215;
+                }
+                dest.setPixel(x, y, newPixel);
+            }
+        }
+
+        return dest;
+    }
+    private static int getBlack(Bitmap src)
+    {
+        int width, height, res = 0;
+        height = src.getHeight();
+        width = src.getWidth();
+        for(int x = 0; x < src.getWidth(); x++){
+            for(int y = 0; y < src.getHeight(); y++){
+
+                int pixel = src.getPixel(x, y);
+
+                //get grayscale value
+                int gray = (pixel & 0xFF);
+                if(gray < 56) res++;
+            }
+        }
+        return res;
+    }
+
 
 }

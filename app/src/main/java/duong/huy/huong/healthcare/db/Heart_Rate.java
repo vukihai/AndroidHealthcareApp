@@ -1,6 +1,9 @@
 package duong.huy.huong.healthcare.db;
 
 import android.os.Bundle;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Heart_Rate {
@@ -78,12 +81,8 @@ public class Heart_Rate {
 
     @Override
     public String toString() {
-        return "Heart_Rate{" +
-            " m_ID=" + m_ID +
-            ", muid='" + muid + '\'' +
-            ", mheart_rate='" + mheart_rate + '\'' +
-            ", mhr_date='" + mhr_date + '\'' +
-            '}';
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        return " nhịp tim: " + mheart_rate + " đo vào ngày: " + dt.format(new Date(Long.valueOf(mhr_date)));
     }
 
 

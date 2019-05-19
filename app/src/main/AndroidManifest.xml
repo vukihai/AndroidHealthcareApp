@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SleepRecorder.SleepRecorderActivity"></activity>
+        <activity android:name=".HeartRateMonitor.BeatHistoryActivity"></activity>
+        <activity android:name=".SleepRecorder.SleepRecorderActivity" />
         <activity android:name=".SleepTracker.SleepTrackerActivity" />
 
         <service
