@@ -97,6 +97,7 @@ public class Recorder {
             wake = 0;
             noise = 0;
             running = false;
+            status = "";
         }
     }
 
@@ -116,10 +117,14 @@ public class Recorder {
         intent.putExtra("sleep", String.valueOf(sleep));
         intent.putExtra("wake", String.valueOf(wake));
         intent.putExtra("noise", String.valueOf(noise));
+        intent.putExtra("status", status);
         context.sendBroadcast(intent);
-        Log.d(TAG, "startTime" + startTime+ " " + String.valueOf(phase) + " " + String.valueOf(sleep)+" " + String.valueOf(wake)+" " + String.valueOf(noise));
-        if(System.currentTimeMillis() - startTime > phase*900000 ) {
+        Log.d("sleep recorder", "status" + status);
+        Log.d("sleep recorder", "chi so " + String.valueOf(sleep) + String.valueOf(wake));
+        if(System.currentTimeMillis() - startTime > phase*300000 ) {
             phase++;
+            if(sleep>wake) status += "0 ";
+            else status += "1 ";
             sleep = 0;
             wake = 0;
             noise = 0;
