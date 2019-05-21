@@ -55,6 +55,7 @@ public class HeartRateActivity extends Activity {
     private static TextView bmpText = null; // textview hien thoi gian
     private static boolean onBeat = false;
     private static boolean started = false;
+    private static boolean measuring = false;
     private static long lastBeatTime = 0;
 
     private static TextView text = null;
@@ -149,6 +150,7 @@ public class HeartRateActivity extends Activity {
          */
         @Override
         public void onPreviewFrame(byte[] data, Camera cam) {
+            if(!measuring) return;
             if (data == null) throw new NullPointerException();
             Camera.Size size = cam.getParameters().getPreviewSize();
             if (size == null) throw new NullPointerException();
@@ -202,6 +204,8 @@ public class HeartRateActivity extends Activity {
                         mHeart_rate.setheart_rate(String.valueOf(dpm));
                         mHeart_rate.sethr_date(String.valueOf(Calendar.getInstance().getTime().getTime()));
                         Heart_RateDao.insertRecord(mHeart_rate);
+                        started = false;
+                        measuring = false;
                     }
                     if(beats < 44 ){
                         if(beats >=4) heartRate.setText(String.valueOf((int)(beats-4)));
@@ -324,6 +328,8 @@ public class HeartRateActivity extends Activity {
         beats = 0;
         bmpText.setText("");
         time.setText("Sẵn sàng đo....");
+        heartRate.setText("0");
+        measuring = true;
     }
     public void beatHisOnclick(View v) {
         Intent mIntent = new Intent(this, BeatHistoryActivity.class);

@@ -159,4 +159,38 @@ public class DbSchema {
             COL_STEP_DATE };
     }
 
+    public static final class Table_User_Info implements BaseColumns  { 
+        // Table Name
+        public static final String TABLE_NAME = "user_info";
+
+        // Table Columns
+        public static final String COL__ID = "_ID";
+        public static final String COL_NAME = "name";
+        public static final String COL_SEX = "sex";
+        public static final String COL_DATE_OF_BIRTH = "date_of_birth";
+        public static final String COL_WEIGHT = "weight";
+        public static final String COL_HEIGHT = "height";
+
+        // Create Table Statement
+        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS user_info ( " + 
+            COL__ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,  " + 
+            COL_NAME + " ," + 
+            COL_SEX + " ," + 
+            COL_DATE_OF_BIRTH + " ," + 
+            COL_WEIGHT + " ," + 
+            COL_HEIGHT + "  );";
+
+        // Drop table statement
+        public static final String DROP_TABLE = "DROP TABLE IF EXISTS user_info;";
+
+        // Columns list array
+        public static final String[] allColumns = {
+            COL__ID,
+            COL_NAME,
+            COL_SEX,
+            COL_DATE_OF_BIRTH,
+            COL_WEIGHT,
+            COL_HEIGHT };
+    }
+
 }

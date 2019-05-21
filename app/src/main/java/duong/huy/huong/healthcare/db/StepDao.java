@@ -28,7 +28,7 @@ public class StepDao extends DbManager {
         mDbManager.close();
     }
 
-    public static Step loadRecordById(int m_ID)  { 
+    public static Step loadRecordById(int m_ID)  {
         database_open();
         Cursor cursor = database.query(DbSchema.Table_Step.TABLE_NAME,allColumns,  "_ID = ?" , new String[] { String.valueOf(m_ID) } , null, null, null,null);
 
@@ -122,19 +122,19 @@ public class StepDao extends DbManager {
         return insertId;
     }
 
-    public static int updateRecord(Step step) { 
+    public static int updateRecord(Step step) {
         ContentValues values = new ContentValues();
         values = getStepValues(step);
         database_open();
-        String[] where = new String[] { String.valueOf(step.get_ID()) }; 
+        String[] where = new String[] { String.valueOf(step.get_ID()) };
         int updatedId = database.update(DbSchema.Table_Step.TABLE_NAME , values, DbSchema.Table_Step.COL__ID + " = ? ",where );
         database_close();
         return updatedId;
     }
 
-    public static int deleteRecord(Step step) { 
+    public static int deleteRecord(Step step) {
         database_open();
-        String[] where = new String[] { String.valueOf(step.get_ID()) }; 
+        String[] where = new String[] { String.valueOf(step.get_ID()) };
         int deletedCount = database.delete(DbSchema.Table_Step.TABLE_NAME , DbSchema.Table_Step.COL__ID + " = ? ",where );
         database_close();
         return deletedCount;
@@ -142,7 +142,7 @@ public class StepDao extends DbManager {
 
     public static int deleteRecord(String id) {
         database_open();
-        String[] where = new String[] { id }; 
+        String[] where = new String[] { id };
         int deletedCount = database.delete(DbSchema.Table_Step.TABLE_NAME , DbSchema.Table_Step.COL__ID + " = ? ",where );
         database_close();
         return deletedCount;
@@ -177,7 +177,6 @@ public class StepDao extends DbManager {
         return step;
     }
 
-    
+
 
 }
-

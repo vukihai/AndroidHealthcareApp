@@ -119,6 +119,12 @@ public class NoiseModel {
         }
         return 0;
     }
+    public int getSnore() {
+        return  snore;
+    }
+    public int getMovement() {
+        return movement;
+    }
 
     public int getIntensity() {
         if(getEvent() == 1) {

@@ -7,17 +7,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
+import duong.huy.huong.healthcare.SleepRecorder.SleepRecorderActivity;
 import duong.huy.huong.healthcare.SleepTracker.SleepTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
+import duong.huy.huong.healthcare.db.User_Info;
+import duong.huy.huong.healthcare.db.User_InfoDao;
 
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
@@ -36,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     Intent mStepCounterIntert;
     Intent mRouteTrackerIntent;
     Intent mHeartRateIntent;
-    Intent mSleepTrackerIntent;
+    Intent mSleepRecorderIntent;
     /**
      * Bắt sự kiện click thanh điều hướng chân màn hình.
      */
@@ -90,14 +98,39 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         startActivity(mStepCounterIntert);
 
     }
+    public void saveUserInfoOnclick(View v) {
+        EditText nameEdt = (EditText)findViewById(R.id.edName);
+        EditText heightEdt =(EditText) findViewById(R.id.edHeight);
+        EditText weightEdt =(EditText) findViewById(R.id.edWeight);
+        TextView name = (TextView) findViewById(R.id.name);
+        name.setText(nameEdt.getText());
+        User_Info mUser_info;
+        ArrayList<User_Info> mUser_infos = User_InfoDao.loadAllRecords();
+        if(mUser_infos.size() >0) {
+            mUser_info = mUser_infos.get(0);
+            mUser_info.setheight(String.valueOf(heightEdt.getText()));
+            mUser_info.setweight(String.valueOf(weightEdt.getText()));
+            mUser_info.setname(String.valueOf(nameEdt.getText()));
+            User_InfoDao.updateRecord(mUser_info);
+        } else{
+            mUser_info = new User_Info();
+            mUser_info.setheight(String.valueOf(heightEdt.getText()));
+            mUser_info.setweight(String.valueOf(weightEdt.getText()));
+            mUser_info.setname(String.valueOf(nameEdt.getText()));
+            User_InfoDao.insertRecord(mUser_info);
+        }
+        Snackbar
+                .make(findViewById(R.id.main_layout), "Cập nhật thành công!", Snackbar.LENGTH_LONG)
+                .show();
+    }
     public void heartRateOnclick(View v) {
         mHeartRateIntent = new Intent(this, HeartRateActivity.class);
         startActivity(mHeartRateIntent);
 
     }
-    public void sleepTrackerOnclick(View v) {
-        mSleepTrackerIntent = new Intent(this, SleepTrackerActivity.class);
-        startActivity(mSleepTrackerIntent);
+    public void sleepRecorderOnclick(View v) {
+        mSleepRecorderIntent = new Intent(this, SleepRecorderActivity.class);
+        startActivity(mSleepRecorderIntent);
 
     }
     public void routeTrackerOnclick(View v) {

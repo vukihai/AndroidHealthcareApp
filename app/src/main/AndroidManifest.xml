@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -24,11 +25,6 @@
         <activity android:name=".HeartRateMonitor.BeatHistoryActivity"></activity>
         <activity android:name=".SleepRecorder.SleepRecorderActivity" />
         <activity android:name=".SleepTracker.SleepTrackerActivity" />
-
-        <service
-            android:name=".RouteTracker.RouteTrackerService"
-            android:enabled="true"
-            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.actions"
@@ -57,6 +53,11 @@
 
         <service
             android:name=".StepCounter.StepCounterSrv"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".SleepRecorder.RecordingService"
             android:enabled="true"
             android:exported="true" />
         <!--

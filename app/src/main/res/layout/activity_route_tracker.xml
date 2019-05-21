@@ -14,19 +14,64 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".RouteTracker.RouteTrackerActivity"
         android:layout_weight="1"
-        />
+        tools:context=".RouteTracker.RouteTrackerActivity" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3">
+        android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Đang tìm vị trí...." />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Đang tìm vị trí...." />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/start_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/margin_very_large"
+                        android:layout_marginRight="@dimen/margin_very_large"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_radius"
+                        android:onClick="onStartBtn"
+                        android:text="Bắt đầu hành trình" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/margin_very_large"
+                        android:layout_marginRight="@dimen/margin_very_large"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_radius"
+                        android:onClick="onStopBtn"
+                        android:text="Kết thúc" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/roadHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="269dp" />
+
+            </LinearLayout>
+        </ScrollView>
     </FrameLayout>
 </LinearLayout>

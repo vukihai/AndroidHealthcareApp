@@ -1,41 +1,47 @@
 package duong.huy.huong.healthcare.SleepRecorder;
 
+import android.annotation.SuppressLint;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class Recorder {
     private static String TAG = "SleepMinderRecorder";
     private AudioRecorder audioRecorder = null;
     private StringBuilder data = new StringBuilder();
-    private String startTime = "";
+    private long startTime = 0;
     private PowerManager.WakeLock wakeLock;
     private boolean running = false;
     private OutputHandler outputHandler;
     private NoiseModel noiseModel = new NoiseModel();
-
+    private String status = "";
+    private int phase;
+    private int sleep, wake, noise;
+    public static Context context;
+    Intent intent;
     /**
      * Start tracking
      */
-    public void start(Context context, OutputHandler outputHandler) {
-
-        this.outputHandler = outputHandler;
+    public void setIntent(){
+    }
+    @SuppressLint("InvalidWakeLockTag")
+    public void start(Context context) {
         this.running = true;
-
-        // Acquire a wake lock so we don't get interrupted
         PowerManager mgr = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
         wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SleepMinderLock");
         wakeLock.acquire();
-
-        // Set the current timestamp to the data string and set start time
-        this.startTime = String.valueOf(System.currentTimeMillis() / 1000L);
-        this.data.append(this.startTime);
-        this.data.append(";");
-
-        // Start the audio recorder
+        this.startTime = System.currentTimeMillis();
+        phase = 0;
+        sleep = 0;
+        wake = 0;
+        noise = 0;
         audioRecorder = new AudioRecorder(noiseModel);
         audioRecorder.start();
-
-        // Get the current data every 5 seconds
         final android.os.Handler customHandler = new android.os.Handler();
         Runnable updateTimerThread = new Runnable()
         {
@@ -46,24 +52,17 @@ public class Recorder {
                         // Recording already stopped. Do nothing here.
                         return;
                     }
-                    /*data.append(String.valueOf(noiseModel.getNormalizedRMS()));
-                    data.append(" ");
-                    data.append(String.valueOf(noiseModel.getNormalizedRLH()));
-                    data.append(" ");
-                    data.append(String.valueOf(noiseModel.getNormalizedVAR()));*/
-                    data.append(String.valueOf(noiseModel.getEvent()));
-                    data.append(" ");
-                    data.append(String.valueOf(noiseModel.getIntensity()));
-
-                    data.append(";");
-                    // Dump the data to the text file if we accumulated "enough" Approximately every 15 minutes
-                    if (data.length() > 1000) {
-                        dumpData();
+                    if(noiseModel.getMovement() > 1) {
+                        wake++;
                     }
-
+                    else if(noiseModel.getSnore() > 5) {
+                        sleep++;
+                    }
+                    if(noiseModel.getEvent() == 0  ){
+                        noise++;
+                    }
+                    dumpData();
                     noiseModel.resetEvents();
-
-                    // Restart in 5 seconds
                     customHandler.postDelayed(this, 5000);
                 }
             }
@@ -92,7 +91,11 @@ public class Recorder {
             dumpData();
 
             // Cleanup
-            startTime = "";
+            startTime = System.currentTimeMillis();
+            phase = 0;
+            sleep = 0;
+            wake = 0;
+            noise = 0;
             running = false;
         }
     }
@@ -105,11 +108,21 @@ public class Recorder {
      * Outputs the accumulated data
      */
     private void dumpData() {
-
+        if(intent == null) intent = new Intent("duong.huy.huong.sleepbroadcast");
         // Save the data
-        outputHandler.saveData(data.toString(), startTime);
-
-        // Clear the data
-        data.setLength(0);
+        //outputHandler.saveData(data.toString(), startTime);
+        intent.putExtra("startTime", String.valueOf(startTime));
+        intent.putExtra("phase", String.valueOf(phase));
+        intent.putExtra("sleep", String.valueOf(sleep));
+        intent.putExtra("wake", String.valueOf(wake));
+        intent.putExtra("noise", String.valueOf(noise));
+        context.sendBroadcast(intent);
+        Log.d(TAG, "startTime" + startTime+ " " + String.valueOf(phase) + " " + String.valueOf(sleep)+" " + String.valueOf(wake)+" " + String.valueOf(noise));
+        if(System.currentTimeMillis() - startTime > phase*900000 ) {
+            phase++;
+            sleep = 0;
+            wake = 0;
+            noise = 0;
+        }
     }
 }

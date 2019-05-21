@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/home_action_bar_color"
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="300sp"
@@ -31,7 +33,7 @@
                 app:civ_shadow_radius="10" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
@@ -40,6 +42,7 @@
                 android:text="Vukihai"
                 android:textSize="24sp" />
         </FrameLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="450dp"
@@ -61,50 +64,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="3dp"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:hint="Họ và Tên"
+                android:inputType="textPersonName"
                 android:textColorHint="@color/white"
-                android:textSize="18dp"
-                android:backgroundTint="@color/white" />
-
-            <EditText
-                android:id="@+id/edBirthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:ems="10"
-                android:inputType="date"
-                android:hint="Ngày Sinh"
-                android:textColorHint="@color/white"
-                android:textSize="18dp"
-                android:backgroundTint="@color/white"/>
+                android:textSize="18dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:id="@+id/txtGioitinh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:text="Giới Tính"
-                    android:textColor="@color/white"
-                    android:textSize="19dp" />
-
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:src="@drawable/ic_mode_edit_black_24dp"
-                    android:background="@color/home_action_bar_color"/>
-
-
-            </LinearLayout>
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" />
 
             <EditText
                 android:id="@+id/edHeight"
@@ -123,31 +94,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:hint="Cân Nặng"
-                android:textColorHint="@color/white"
-                android:textSize="18dp"
-                android:backgroundTint="@color/white"/>
-
-            <EditText
-                android:id="@+id/edStatus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="Tình Trạng Sức Khỏe"
                 android:textColorHint="@color/white"
-                android:textSize="18dp"
-                android:backgroundTint="@color/white"/>
+                android:textSize="18dp" />
 
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="149dp"
                 android:layout_height="62dp"
-                android:text="Cập Nhật"
-                android:background="@drawable/border_radius"/>
+                android:background="@drawable/border_radius"
+                android:onClick="saveUserInfoOnclick"
+                android:text="Cập Nhật" />
 
         </LinearLayout>
     </LinearLayout>

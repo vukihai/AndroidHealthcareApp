@@ -78,6 +78,7 @@ public class DbManager {
             db.execSQL(DbSchema.Table_Walking_Goal.CREATE_TABLE);
             db.execSQL(DbSchema.Table_Step_Goal.CREATE_TABLE);
             db.execSQL(DbSchema.Table_Step.CREATE_TABLE);
+            db.execSQL(DbSchema.Table_User_Info.CREATE_TABLE);
         }
 
         @Override
@@ -87,6 +88,7 @@ public class DbManager {
             db.execSQL(DbSchema.Table_Walking_Goal.DROP_TABLE);
             db.execSQL(DbSchema.Table_Step_Goal.DROP_TABLE);
             db.execSQL(DbSchema.Table_Step.DROP_TABLE);
+            db.execSQL(DbSchema.Table_User_Info.DROP_TABLE);
             this.onCreate(db);
         }
 

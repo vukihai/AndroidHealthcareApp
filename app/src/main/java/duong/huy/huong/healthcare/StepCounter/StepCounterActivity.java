@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -84,10 +85,16 @@ public class StepCounterActivity extends AppCompatActivity {
             startService(srv);
             startDate = Calendar.getInstance().getTime();
             srvButton.setText("Tạm dừng");
+            Drawable img = getResources().getDrawable( R.drawable.ic_pause);
+            srvButton.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+
         } else {
             Toast.makeText(this, "stop srv", Toast.LENGTH_LONG).show();
             stopService(srv);
             srvButton.setText("Chạy bộ đếm");
+            Drawable img = getResources().getDrawable( R.drawable.ic_play_circle_outline_black_24dp);
+            srvButton.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+
         }
     }
     @Override

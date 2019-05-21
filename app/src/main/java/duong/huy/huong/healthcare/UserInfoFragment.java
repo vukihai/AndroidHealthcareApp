@@ -7,6 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Date;
+
+import duong.huy.huong.healthcare.db.User_Info;
+import duong.huy.huong.healthcare.db.User_InfoDao;
 
 
 /**
@@ -22,11 +29,20 @@ public class UserInfoFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private String name;
+    private String sex;
+    private Date dateOfBirth;
+    private double weight;
+    private double height;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private EditText nameEdt;
+    private EditText sexEdt;
+    private EditText dateOfBirthEdt;
+    private EditText weightEdt;
+    private EditText heightEdt;
     private OnFragmentInteractionListener mListener;
 
     public UserInfoFragment() {
@@ -64,7 +80,18 @@ public class UserInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_info, container, false);
+        nameEdt = (EditText)view.findViewById(R.id.edName);
+//        sexEdt = view.findViewById(R.id.txtGioitinh);
+        heightEdt =(EditText)view.findViewById(R.id.edHeight);
+        weightEdt =(EditText)view.findViewById(R.id.edWeight);
+        User_Info mUser_info= User_InfoDao.loadAllRecords().get(0);
+        nameEdt.setText(mUser_info.getname());
+        heightEdt.setText(mUser_info.getheight());
+        weightEdt.setText(mUser_info.getweight());
+        TextView name = (TextView) view.findViewById(R.id.name);
+        name.setText(mUser_info.getname());
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
