@@ -1,6 +1,9 @@
 package duong.huy.huong.healthcare.db;
 
 import android.os.Bundle;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Walking {
@@ -104,14 +107,11 @@ public class Walking {
 
     @Override
     public String toString() {
-        return "Walking{" +
-            " m_ID=" + m_ID +
-            ", muid='" + muid + '\'' +
-            ", mroad='" + mroad + '\'' +
-            ", mtime_begin='" + mtime_begin + '\'' +
-            ", mtime_end='" + mtime_end + '\'' +
-            ", mdistance='" + mdistance + '\'' +
-            '}';
+        Timestamp stamp = new Timestamp(Long.valueOf(mtime_begin));
+        Date date = new Date(stamp.getTime());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        String strDate = formatter.format(date);
+        return "ngày " + strDate + " bạn đã đi " + String.valueOf(Math.round(Float.valueOf(mdistance))) + " m.";
     }
 
 

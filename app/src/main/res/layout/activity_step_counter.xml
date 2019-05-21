@@ -98,7 +98,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textV2"
+                        android:id="@+id/distance"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
                         android:layout_weight="1"
@@ -157,7 +157,7 @@
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:drawableStart="@drawable/ic_pause"
+                    android:drawableStart="@drawable/ic_play_circle_outline_black_24dp"
                     android:background="@drawable/border_radius"
                     android:onClick="startSrv"
                     android:text="Chạy bộ đếm" />

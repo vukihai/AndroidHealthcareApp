@@ -35,13 +35,18 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import duong.huy.huong.healthcare.R;
 import duong.huy.huong.healthcare.db.DbManager;
+import duong.huy.huong.healthcare.db.Step;
+import duong.huy.huong.healthcare.db.StepDao;
 import duong.huy.huong.healthcare.db.Step_Goal;
 import duong.huy.huong.healthcare.db.Step_GoalDao;
+import duong.huy.huong.healthcare.db.User_Info;
+import duong.huy.huong.healthcare.db.User_InfoDao;
 
 public class StepCounterActivity extends AppCompatActivity {
     ImageView headerCircle;
@@ -51,6 +56,12 @@ public class StepCounterActivity extends AppCompatActivity {
     Intent srv;
     String step_goal;
     TextView goal;
+    TextView distance;
+
+    /**
+     * Hàm onclick của button đặt mục tiêu.
+     * @param v
+     */
     public void setStepGoal(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("đặt mục tiêu");
@@ -78,10 +89,14 @@ public class StepCounterActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * Hàm onClick của nút chạy/dừng dịch vụ.
+     * @param v
+     */
     public void startSrv(View v) {
         if(!isMyServiceRunning(StepCounterSrv.class)) {
             // srv chua chay
-            Toast.makeText(this, "start srv", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "start srv", Toast.LENGTH_LONG).show();
             startService(srv);
             startDate = Calendar.getInstance().getTime();
             srvButton.setText("Tạm dừng");
@@ -89,14 +104,19 @@ public class StepCounterActivity extends AppCompatActivity {
             srvButton.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
 
         } else {
-            Toast.makeText(this, "stop srv", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "stop srv", Toast.LENGTH_LONG).show();
             stopService(srv);
             srvButton.setText("Chạy bộ đếm");
             Drawable img = getResources().getDrawable( R.drawable.ic_play_circle_outline_black_24dp);
             srvButton.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
-
+            drawChart();
         }
     }
+
+    /**
+     * Hàm khởi tạo. init các view và đăng kí nhận broadcast.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +125,7 @@ public class StepCounterActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         srv = new Intent(getBaseContext(), StepCounterSrv.class);
-
+        distance = (TextView) findViewById(R.id.distance);
         goal = (TextView) findViewById(R.id.textView);
         ArrayList<Step_Goal> sg = Step_GoalDao.loadAllRecords();
         if(sg.size() >=1) {
@@ -132,11 +152,21 @@ public class StepCounterActivity extends AppCompatActivity {
         mLineChart = (LineChart) findViewById(R.id.chart1);
         drawChart();
     }
+
+    /**
+     * hàm hủy. bỏ đăng kí nhận tin broadcast.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
     }
+
+    /**
+     * Hàm kiểm tra xem 1 service có đang chạy không.
+     * @param serviceClass
+     * @return
+     */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -146,10 +176,14 @@ public class StepCounterActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    /**
+     * Hàm nhận tin broadcast số bước chân.
+     *
+     */
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // call updateUI passing in our intent which is holding the data to display.
             TextView t = (TextView) findViewById(R.id.num_step);
             t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " Bước");
             TextView t1 = (TextView) findViewById(R.id.textView2);
@@ -163,19 +197,33 @@ public class StepCounterActivity extends AppCompatActivity {
                 t2.setText(String.valueOf(time/60000) + " phút");
             }
 
+            ArrayList<User_Info> mUser_infos = User_InfoDao.loadAllRecords();
+            double height = Double.valueOf(mUser_infos.get(0).getheight());
+            double dist = Double.valueOf(intent.getStringExtra("numSteps"))*0.415*height/100;
+            if(dist < 100) {
+                distance.setText(String.valueOf((int)dist) + "m");
+            } else {
+                distance.setText(String.valueOf((int)(dist/1000)) + "km");
+            }
+
 
         }
 
     };
+
+    /**
+     * Hàm vẽ biểu đồ lịch sử bước đi. sử dụng thư viện MPChart
+     */
     private void drawChart(){
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 400f));
-        entries.add(new Entry(1, 402f));
-        entries.add(new Entry(2, 300f));
-        entries.add(new Entry(3, 500f));
-        entries.add(new Entry(4, 404f));
-        entries.add(new Entry(5, 424f));
-        entries.add(new Entry(6, 444f));
+        ArrayList<Step> steps = StepDao.loadAllRecords();
+        while(steps.size() >7) {
+            StepDao.deleteRecord(steps.get(0));
+            steps.remove(0);
+        }
+        for(int i=0; i<steps.size(); i++) {
+            entries.add(new Entry(i, Float.valueOf(steps.get(i).getstep())));
+        }
         LineDataSet dataset = new LineDataSet(entries, "Bước");
         dataset.setDrawIcons(false);
         dataset.setMode(LineDataSet.Mode.CUBIC_BEZIER);
@@ -198,8 +246,5 @@ public class StepCounterActivity extends AppCompatActivity {
         //mBarData.addEntry(new Entry(dataset));
         //mBarChart.setData(mBarData);
         //mBarChart.setDescription("số bước đi trong 5 ngày gần đây");
-
-
-
     }
 }

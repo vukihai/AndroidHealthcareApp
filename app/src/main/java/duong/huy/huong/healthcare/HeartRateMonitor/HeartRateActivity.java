@@ -63,7 +63,7 @@ public class HeartRateActivity extends Activity {
     private static WakeLock wakeLock = null;
 
     private static int averageIndex = 0;
-    private static final int averageArraySize = 7;
+    private static final int averageArraySize = 4;
     private static final int[] averageArray = new int[averageArraySize];
 
     public static enum TYPE {
@@ -179,42 +179,44 @@ public class HeartRateActivity extends Activity {
 
             if (imgAvg < rollingAverage && imgAvg > 180) {
                 newType = TYPE.RED;
-                if (onBeat) {
-                    if(lastBeatTime != 0) {
-                        long curTime = System.currentTimeMillis();
-                        long step =  curTime- lastBeatTime;
-                        if (step < 600) {
-                            return;
-                        } else
-                            lastBeatTime = curTime;
+                if(lastBeatTime != 0) {
+                    long curTime = System.currentTimeMillis();
+                    long step =  curTime- lastBeatTime;
+                    if (step < 400) {
+                        Log.d("heartrate step: ", String.valueOf(step));
+                    } else {
+                        lastBeatTime = curTime;
+                        if (onBeat) {
+                            beats++;
+                            if(!started && beats == 4) {
+                                started =true;
+                                startTime = System.currentTimeMillis();
+                            }
+                            if(beats == 44) {
+                                long endTime = System.currentTimeMillis();
+                                double totalTimeInSecs = (endTime - startTime) / 1000d;
+                                double bps = ((beats-4) / totalTimeInSecs);
+                                int dpm = (int) (bps * 60d);
+                                heartRate.setText(String.valueOf(dpm));
+                                bmpText.setText("BMP");
+                                Heart_Rate mHeart_rate = new Heart_Rate();
+                                mHeart_rate.setheart_rate(String.valueOf(dpm));
+                                mHeart_rate.sethr_date(String.valueOf(Calendar.getInstance().getTime().getTime()));
+                                Heart_RateDao.insertRecord(mHeart_rate);
+                                started = false;
+                                measuring = false;
+                            }
+                            if(beats < 44 ){
+                                if(beats >=4) heartRate.setText(String.valueOf((int)(beats-4)));
+                            }
+                            beatImg.setImageResource(R.drawable.green_icon);
+                            onBeat = false;
+                            // Log.d(TAG, "BEAT!! beats="+beats);
+                        }
                     }
-                    beats++;
-                    if(!started && beats == 4) {
-                        started =true;
-                        startTime = System.currentTimeMillis();
-                    }
-                    if(beats == 44) {
-                        long endTime = System.currentTimeMillis();
-                        double totalTimeInSecs = (endTime - startTime) / 1000d;
-                        double bps = ((beats-4) / totalTimeInSecs);
-                        int dpm = (int) (bps * 60d);
-                        heartRate.setText(String.valueOf(dpm));
-                        bmpText.setText("BMP");
-                        Heart_Rate mHeart_rate = new Heart_Rate();
-                        mHeart_rate.setheart_rate(String.valueOf(dpm));
-                        mHeart_rate.sethr_date(String.valueOf(Calendar.getInstance().getTime().getTime()));
-                        Heart_RateDao.insertRecord(mHeart_rate);
-                        started = false;
-                        measuring = false;
-                    }
-                    if(beats < 44 ){
-                        if(beats >=4) heartRate.setText(String.valueOf((int)(beats-4)));
-                    }
-                    beatImg.setImageResource(R.drawable.green_icon);
-                    onBeat = false;
-                    // Log.d(TAG, "BEAT!! beats="+beats);
                 }
-            } else if (imgAvg > rollingAverage && imgAvg > 180) {
+
+            } else if (imgAvg > rollingAverage ) {
                 onBeat = true;
                 beatImg.setImageResource(R.drawable.red_icon);
             }
@@ -330,6 +332,7 @@ public class HeartRateActivity extends Activity {
         time.setText("Sẵn sàng đo....");
         heartRate.setText("0");
         measuring = true;
+        lastBeatTime = System.currentTimeMillis();
     }
     public void beatHisOnclick(View v) {
         Intent mIntent = new Intent(this, BeatHistoryActivity.class);

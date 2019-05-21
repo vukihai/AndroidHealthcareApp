@@ -9,9 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -57,6 +60,7 @@ public class RouteTrackerActivity extends FragmentActivity implements
     private TextView mTextView;
     private long startTime;
     private long finishTime;
+    private boolean foundLocation = false;
     double distance;
     private boolean onGoing = false;
     private ListView roadHis = null;
@@ -76,6 +80,7 @@ public class RouteTrackerActivity extends FragmentActivity implements
                     .build();
         }
 
+        // init lich su
         roadHis = (ListView) findViewById(R.id.roadHistory);
         loadHistory();
         roadHis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,11 +88,22 @@ public class RouteTrackerActivity extends FragmentActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                gpsTrack = StringToGpsTrack(WalkingDao.loadAllRecords().get((int)id).getroad());
+                ArrayList<Walking> walkings = WalkingDao.loadAllRecords();
 
+                gpsTrack = StringToGpsTrack(walkings.get(walkings.size()-(int)id-1).getroad());
+                Log.d("id", String.valueOf(walkings.size()-(int)id-1));
             }
         });
+
+        // disable button khi chua tim thay vi tri
+        if(!foundLocation) {
+            Button start = (Button) findViewById(R.id.start_btn);
+            Button end = (Button) findViewById(R.id.end_button);
+            start.setEnabled(false);
+            end.setEnabled(false);
+        }
     }
+
     public void loadHistory() {
         ArrayList<Walking> mWalkings = WalkingDao.loadAllRecords();
         while(mWalkings.size() > 20 ) {
@@ -96,9 +112,18 @@ public class RouteTrackerActivity extends FragmentActivity implements
         }
         Collections.reverse(mWalkings);
         ArrayAdapter<Walking> arrayAdapter
-                = new ArrayAdapter<Walking>(this, android.R.layout.simple_list_item_1 , (Walking[]) mWalkings.toArray(new Walking[mWalkings.size()]));
+                = new ArrayAdapter<Walking>(this, android.R.layout.simple_list_item_1 , (Walking[]) mWalkings.toArray(new Walking[mWalkings.size()])){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                View view = super.getView(position, convertView, parent);
+                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                tv.setTextColor(Color.WHITE);
+                return view;
+            }
+        };
         roadHis.setAdapter(arrayAdapter);
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
@@ -174,6 +199,8 @@ public class RouteTrackerActivity extends FragmentActivity implements
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownLatLng, 15));
             firstLat = false;
             mTextView.setText("đã tìm thấy vị trí hiện tại");
+            Button start = (Button) findViewById(R.id.start_btn);
+            start.setEnabled(true);
         } else {
             distance += tmp.distanceTo(location);
             mTextView.setText(String.valueOf(distance) + " m");
@@ -208,6 +235,13 @@ public class RouteTrackerActivity extends FragmentActivity implements
     public void onStartBtn(View v) {
         if(!onGoing) onGoing = true;
         startTime = System.currentTimeMillis();
+        Button start = (Button) findViewById(R.id.start_btn);
+        Button end = (Button) findViewById(R.id.end_button);
+        start.setEnabled(false);
+        end.setEnabled(true);
+        List<LatLng> points = gpsTrack.getPoints();
+        points.clear();
+        gpsTrack.setPoints(points);
     }
     private String gpsTrackToString(Polyline gpsTrack) {
         String ret = "";
@@ -234,19 +268,19 @@ public class RouteTrackerActivity extends FragmentActivity implements
         return gpsTrack;
     }
 
-    public void onStopBtn(View v) throws IOException, ClassNotFoundException {
+    public void onStopBtn(View v) {
         onGoing = false;
         Walking mWalking = new Walking();
         mWalking.setdistance(String.valueOf(distance));
-
-        List<LatLng> points = gpsTrack.getPoints();
-
         mWalking.setroad(String.valueOf(gpsTrackToString(gpsTrack)));
         mWalking.settime_begin(String.valueOf(startTime));
         mWalking.settime_end(String.valueOf(finishTime));
         WalkingDao.insertRecord(mWalking);
-
-        gpsTrack = StringToGpsTrack(WalkingDao.loadAllRecords().get(0).getroad());
+        Button start = (Button) findViewById(R.id.start_btn);
+        Button end = (Button) findViewById(R.id.end_button);
+        start.setEnabled(true);
+        end.setEnabled(false);
+        loadHistory();
     }
 
 }

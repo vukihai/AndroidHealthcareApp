@@ -1,6 +1,9 @@
 package duong.huy.huong.healthcare.db;
 
 import android.os.Bundle;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Step {

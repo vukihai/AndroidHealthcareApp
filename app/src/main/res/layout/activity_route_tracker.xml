@@ -22,56 +22,73 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đang tìm vị trí...." />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/start_btn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đang tìm vị trí...." />
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_very_large"
+                    android:layout_marginRight="@dimen/margin_very_large"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_radius"
+                    android:onClick="onStartBtn"
+                    android:text="Bắt đầu hành trình" />
+
+                <Button
+                    android:id="@+id/end_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_very_large"
+                    android:layout_marginRight="@dimen/margin_very_large"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_radius"
+                    android:onClick="onStopBtn"
+                    android:text="Kết thúc" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lịch sử" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:minHeight="5000dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/start_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/margin_very_large"
-                        android:layout_marginRight="@dimen/margin_very_large"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_radius"
-                        android:onClick="onStartBtn"
-                        android:text="Bắt đầu hành trình" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/margin_very_large"
-                        android:layout_marginRight="@dimen/margin_very_large"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_radius"
-                        android:onClick="onStopBtn"
-                        android:text="Kết thúc" />
+                    <ListView
+                        android:id="@+id/roadHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:background="@color/home_background" />
                 </LinearLayout>
+            </ScrollView>
 
-                <ListView
-                    android:id="@+id/roadHistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="269dp" />
+        </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
     </FrameLayout>
 </LinearLayout>
