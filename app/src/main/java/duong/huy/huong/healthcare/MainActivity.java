@@ -35,11 +35,12 @@ import duong.huy.huong.healthcare.db.User_InfoDao;
  */
 public class MainActivity extends AppCompatActivity implements Home.OnFragmentInteractionListener, Remind.OnFragmentInteractionListener,UserInfoFragment.OnFragmentInteractionListener {
 
-    private TextView mTextMessage;
     Intent mStepCounterIntert;
     Intent mRouteTrackerIntent;
     Intent mHeartRateIntent;
     Intent mSleepRecorderIntent;
+    TextView step;
+    TextView calo;
     /**
      * Bắt sự kiện click thanh điều hướng chân màn hình.
      */
@@ -163,7 +164,8 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadFragment(new Home()); // load fragment mặc định
-
+        step = (TextView) findViewById(R.id.textView7);
+        calo = (TextView) findViewById(R.id.textView5);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.getSupportActionBar().hide();// ẩn actionbar
@@ -174,12 +176,6 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     @Override
     public void onResume(){
         super.onResume();
-        if(!isMyServiceRunning(StepCounterSrv.class)) {
-            TextView t = (TextView) findViewById(R.id.textView7);
-            t.setText(String.valueOf(0));
-            TextView under = (TextView) findViewById(R.id.textView5);
-            under.setText(String.valueOf(0) + " calo");
-        }
     }
     /**
     * Hàm dùng để nhận callback từ các fragment con.
@@ -195,10 +191,8 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            TextView t = (TextView) findViewById(R.id.textView7);
-            t.setText(String.valueOf(intent.getStringExtra("numSteps")));
-            TextView under = (TextView) findViewById(R.id.textView5);
-            under.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calo");
+            step.setText(String.valueOf(intent.getStringExtra("numSteps")));
+            calo.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calo");
         }
 
     };
