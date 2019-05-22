@@ -44,9 +44,9 @@
                         android:layout_height="251dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="1000"
-                        android:textSize="@dimen/univers_header_bigo"
-                        android:textColor="@color/step_chart"/>
+                        android:text="0"
+                        android:textColor="@color/step_chart"
+                        android:textSize="@dimen/univers_header_bigo" />
 
                     <TextView
                         android:id="@+id/textView5"
@@ -54,9 +54,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/header_text_margin"
-                        android:text="0 bước | 0 calos"
-                        android:textSize="@dimen/univers_header_text_size"
-                        android:textColor="@color/step_chart"/>
+                        android:text="0 calos"
+                        android:textColor="@color/step_chart"
+                        android:textSize="@dimen/univers_header_text_size" />
                 </FrameLayout>
 
                 <LinearLayout

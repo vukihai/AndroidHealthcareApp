@@ -111,6 +111,7 @@ public class StepCounterSrv extends Service implements SensorEventListener, Step
                 if(mStep == null) {
                     mStep = new Step();
                     mStep.setstep(String.valueOf(numSteps));
+                    mStep.setstep_date(day);
                     StepDao.insertRecord(mStep);
                 } else {
                     if(stepOnDB == 0) stepOnDB = Integer.valueOf(mStep.getstep());
@@ -120,7 +121,7 @@ public class StepCounterSrv extends Service implements SensorEventListener, Step
                         mStep.setstep(String.valueOf(numSteps));
                     StepDao.updateRecord(mStep);
                 }
-                handler.postDelayed(this, 10000);
+                handler.postDelayed(this, 1000);
             }
         }
     };

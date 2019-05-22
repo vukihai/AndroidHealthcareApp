@@ -27,22 +27,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import duong.huy.huong.healthcare.R;
-import duong.huy.huong.healthcare.db.Heart_Rate;
-import duong.huy.huong.healthcare.db.Heart_RateDao;
 import duong.huy.huong.healthcare.db.Walking;
 import duong.huy.huong.healthcare.db.WalkingDao;
 
@@ -59,11 +49,15 @@ public class RouteTrackerActivity extends FragmentActivity implements
     private boolean firstLat;
     private TextView mTextView;
     private long startTime;
-    private long finishTime;
     private boolean foundLocation = false;
     double distance;
     private boolean onGoing = false;
     private ListView roadHis = null;
+
+    /**
+     * Hàm khởi tạo. init các giá trị.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +83,8 @@ public class RouteTrackerActivity extends FragmentActivity implements
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 ArrayList<Walking> walkings = WalkingDao.loadAllRecords();
-
                 gpsTrack = StringToGpsTrack(walkings.get(walkings.size()-(int)id-1).getroad());
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(gpsTrack.getPoints().get(0), 19));
                 Log.d("id", String.valueOf(walkings.size()-(int)id-1));
             }
         });
@@ -104,6 +98,9 @@ public class RouteTrackerActivity extends FragmentActivity implements
         }
     }
 
+    /**
+     * Hàm load các chuyến đi trong lịch sử.
+     */
     public void loadHistory() {
         ArrayList<Walking> mWalkings = WalkingDao.loadAllRecords();
         while(mWalkings.size() > 20 ) {
@@ -127,34 +124,29 @@ public class RouteTrackerActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng calymayor = new LatLng(19.345822, -99.152274);
-        map.moveCamera(CameraUpdateFactory.newLatLng(calymayor));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(calymayor, 15));
+        LatLng defaultCamera = new LatLng(21.028511, 105.804817);
+        map.moveCamera(CameraUpdateFactory.newLatLng(defaultCamera));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultCamera, 19));
         PolylineOptions polylineOptions = new PolylineOptions();
         polylineOptions.color(Color.CYAN);
-        polylineOptions.width(15);
+        polylineOptions.width(20);
         gpsTrack = map.addPolyline(polylineOptions);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         map.setMyLocationEnabled(true);
-
         mTextView = findViewById(R.id.textView);
     }
-
-
     @Override
     protected void onStart() {
         googleApiClient.connect();
         super.onStart();
     }
-
     @Override
     protected void onStop() {
         googleApiClient.disconnect();
         super.onStop();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -184,6 +176,10 @@ public class RouteTrackerActivity extends FragmentActivity implements
 
     }
 
+    /**
+     * Hàm update quãng đường khi vị trí thay đổi.
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
         Location tmp = new Location("");
@@ -193,22 +189,25 @@ public class RouteTrackerActivity extends FragmentActivity implements
             tmp.setLatitude(lastKnownLatLng.latitude);
         }
         lastKnownLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-
         if(firstLat) {
             map.moveCamera(CameraUpdateFactory.newLatLng(lastKnownLatLng));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownLatLng, 15));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownLatLng, 19));
             firstLat = false;
             mTextView.setText("đã tìm thấy vị trí hiện tại");
             Button start = (Button) findViewById(R.id.start_btn);
             start.setEnabled(true);
         } else {
             distance += tmp.distanceTo(location);
-            mTextView.setText(String.valueOf(distance) + " m");
+            mTextView.setText(String.valueOf(Math.round(distance*10)/10) + " m");
         }
 
         updateTrack();
     }
 
+    /**
+     * Cấu hình gửi yêu cầu update vị trí.
+     */
+    @SuppressWarnings("deprecation")
     protected void startLocationUpdates() {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(2000);
@@ -221,17 +220,29 @@ public class RouteTrackerActivity extends FragmentActivity implements
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
 
+    /**
+     * tạm dừng update vị trí.
+     */
+    @SuppressWarnings("deprecation")
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 googleApiClient, this);
     }
 
+    /**
+     * updat đường đi.
+     */
     private void updateTrack() {
         if(!onGoing) return;
         List<LatLng> points = gpsTrack.getPoints();
         points.add(lastKnownLatLng);
         gpsTrack.setPoints(points);
     }
+
+    /**
+     * Hàm oncick của nút bắt đầu hành trình.
+     * @param v
+     */
     public void onStartBtn(View v) {
         if(!onGoing) onGoing = true;
         startTime = System.currentTimeMillis();
@@ -243,6 +254,12 @@ public class RouteTrackerActivity extends FragmentActivity implements
         points.clear();
         gpsTrack.setPoints(points);
     }
+
+    /**
+     * convert tọa độ đường đi gps sang string để lưu vào csdl.
+     * @param gpsTrack
+     * @return
+     */
     private String gpsTrackToString(Polyline gpsTrack) {
         String ret = "";
         List<LatLng> points = gpsTrack.getPoints();
@@ -254,6 +271,12 @@ public class RouteTrackerActivity extends FragmentActivity implements
         }
         return ret;
     }
+
+    /**
+     * đọc string trong cơ sở dữ liệu và convert sang đường đi.
+     * @param s
+     * @return
+     */
     private Polyline StringToGpsTrack(String s) {
         List<LatLng> points = gpsTrack.getPoints();
         points.clear();
@@ -268,8 +291,13 @@ public class RouteTrackerActivity extends FragmentActivity implements
         return gpsTrack;
     }
 
+    /**
+     * Hàm onclick của nút kết thúc hành trình.
+     * @param v
+     */
     public void onStopBtn(View v) {
         onGoing = false;
+        long finishTime = System.currentTimeMillis();
         Walking mWalking = new Walking();
         mWalking.setdistance(String.valueOf(distance));
         mWalking.setroad(String.valueOf(gpsTrackToString(gpsTrack)));
@@ -282,5 +310,4 @@ public class RouteTrackerActivity extends FragmentActivity implements
         end.setEnabled(false);
         loadHistory();
     }
-
 }

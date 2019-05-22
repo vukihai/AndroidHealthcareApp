@@ -1,8 +1,10 @@
 package duong.huy.huong.healthcare;
 
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +26,7 @@ import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.SleepRecorder.SleepRecorderActivity;
 import duong.huy.huong.healthcare.SleepTracker.SleepTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
+import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
 import duong.huy.huong.healthcare.db.User_Info;
 import duong.huy.huong.healthcare.db.User_InfoDao;
 
@@ -35,12 +38,6 @@ import duong.huy.huong.healthcare.db.User_InfoDao;
 public class MainActivity extends AppCompatActivity implements Home.OnFragmentInteractionListener, Remind.OnFragmentInteractionListener,UserInfoFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
-    //StepCounterSrv StepCountingService;
-//    private Button testMapButton;
-//    private Button testHeartRateButton;
-//    Intent intent;
-//    Intent mapIntent;
-//    Intent heartRateIntent;
     Intent mStepCounterIntert;
     Intent mRouteTrackerIntent;
     Intent mHeartRateIntent;
@@ -55,15 +52,12 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
             Fragment mFragment;
             switch (item.getItemId()) {
                 case R.id.navigation_tracking:
-                    //mTextMessage.setText("abc");
                     mFragment = new Home();
                     loadFragment(mFragment);
                     return true;
                 case R.id.navigation_remind:
-                    //mTextMessage.setText("abc");
                     mFragment = new Remind();
                     loadFragment(mFragment);
-
                     return true;
                 case R.id.navigation_user_info:
                     mFragment = new UserInfoFragment();
@@ -93,11 +87,21 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         }
         return false;
     }
+
+    /**
+     * Hàm onclick của nút mở giao diện đếm bước chân.
+     * @param v
+     */
     public void stepCounterOnclick(View v) {
         mStepCounterIntert = new Intent(this, StepCounterActivity.class);
         startActivity(mStepCounterIntert);
 
     }
+
+    /**
+     * Hàm onclick của nút lưu thông tin người dùng.
+     * @param v
+     */
     public void saveUserInfoOnclick(View v) {
         EditText nameEdt = (EditText)findViewById(R.id.edName);
         EditText heightEdt =(EditText) findViewById(R.id.edHeight);
@@ -123,67 +127,62 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
                 .make(findViewById(R.id.main_layout), "Cập nhật thành công!", Snackbar.LENGTH_LONG)
                 .show();
     }
+
+    /**
+     * Hàm onclick của nút mở giao diện đo nhịp tim.
+     * @param v
+     */
     public void heartRateOnclick(View v) {
         mHeartRateIntent = new Intent(this, HeartRateActivity.class);
         startActivity(mHeartRateIntent);
 
     }
+
+    /**
+     * hàm mở giao diện theo dõi giấc ngủ.
+     * @param v
+     */
     public void sleepRecorderOnclick(View v) {
         mSleepRecorderIntent = new Intent(this, SleepRecorderActivity.class);
         startActivity(mSleepRecorderIntent);
 
     }
+
+    /**
+     * Hàm mở giao diện theo dõi hành trình.
+     * @param v
+     */
     public void routeTrackerOnclick(View v) {
-        //mStepCounterIntert = new Intent(this, StepCounterActivity.class);
-        //startActivity(mStepCounterIntert);
         mRouteTrackerIntent = new Intent(this, RouteTrackerActivity.class);
         startActivity(mRouteTrackerIntent);
     }
     /**
-     * Hàm gọi 1 lần khi khởi tạo đối tượng.
+     * Hàm khởi tạo đối tượng.
      * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadFragment(new Home());
+        loadFragment(new Home()); // load fragment mặc định
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        this.getSupportActionBar().hide();
+        this.getSupportActionBar().hide();// ẩn actionbar
 
-        //registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
-//        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
-//        intent = new Intent("duong.huy.huong.stepcounterbroadcast");
-//
-//        mapIntent = new Intent(this, RouteTrackerActivity.class);
-//        testMapButton = (Button) findViewById(R.id.testMapButton);
-//        testMapButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                startActivity(mapIntent);
-//            }
-//        });
-//        testHeartRateButton = (Button) findViewById(R.id.testHeartRateButton);
-//        heartRateIntent = new Intent(this, HeartRateActivity.class);
-//        testHeartRateButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(heartRateIntent);
-//            }
-//        });
+        registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
+
     }
-//    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            // call updateUI passing in our intent which is holding the data to display.
-//            TextView t = (TextView) findViewById(R.id.test_counter);
-//            t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " bước");
-//        }
-//    };
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(!isMyServiceRunning(StepCounterSrv.class)) {
+            TextView t = (TextView) findViewById(R.id.textView7);
+            t.setText(String.valueOf(0));
+            TextView under = (TextView) findViewById(R.id.textView5);
+            under.setText(String.valueOf(0) + " calo");
+        }
+    }
     /**
     * Hàm dùng để nhận callback từ các fragment con.
      */
@@ -191,32 +190,18 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     public void onFragmentInteraction(Uri uri) {
 
     }
-//    public void testDB(){
-//        Step st = StepDao.loadRecordByStep_Date(String.valueOf(Calendar.getInstance().getTime().getTime()/60/1000/24));
-//        if(st == null) {
-//            TextView t = (TextView) findViewById(R.id.textView7);
-//            t.setText("null");
-//        } else {
-//            TextView t = (TextView) findViewById(R.id.textView7);
-//            t.setText(st.getstep());
-//        }
-//
-//
-//
-//    }
 
     /**
      * Nhận broadcast bước chân
      */
-//    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            // call updateUI passing in our intent which is holding the data to display.
-//            TextView t = (TextView) findViewById(R.id.textView7);
-//            t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " Bước");
-//            testDB();
-//            //if(!isMyServiceRunning())
-//        }
-//
-//    };
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            TextView t = (TextView) findViewById(R.id.textView7);
+            t.setText(String.valueOf(intent.getStringExtra("numSteps")));
+            TextView under = (TextView) findViewById(R.id.textView5);
+            under.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calo");
+        }
+
+    };
 }

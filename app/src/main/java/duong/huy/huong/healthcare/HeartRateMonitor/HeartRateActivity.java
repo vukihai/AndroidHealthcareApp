@@ -216,7 +216,7 @@ public class HeartRateActivity extends Activity {
                     }
                 }
 
-            } else if (imgAvg > rollingAverage ) {
+            } else if (imgAvg > rollingAverage && imgAvg > 180) {
                 onBeat = true;
                 beatImg.setImageResource(R.drawable.red_icon);
             }

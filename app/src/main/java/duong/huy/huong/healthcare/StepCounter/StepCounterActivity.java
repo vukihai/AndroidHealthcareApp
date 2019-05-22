@@ -187,7 +187,7 @@ public class StepCounterActivity extends AppCompatActivity {
             TextView t = (TextView) findViewById(R.id.num_step);
             t.setText(String.valueOf(intent.getStringExtra("numSteps")) + " Bước");
             TextView t1 = (TextView) findViewById(R.id.textView2);
-            t1.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calos");
+            t1.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calo");
             TextView t2 = (TextView) findViewById(R.id.textVie2);
             String tmp = intent.getStringExtra("time");
             int time = Integer.parseInt(tmp);
