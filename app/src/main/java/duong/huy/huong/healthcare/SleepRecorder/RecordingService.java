@@ -41,18 +41,20 @@ public class RecordingService extends Service {
         myApplication.recorder.start(this);
         return START_STICKY;
     }
+
+    /**
+     * Hàm để show notification.
+     * @return
+     */
     private Notification getNotification() {
-        Log.d(TAG, "getNotification: runable");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this, "M_CH_ID")
                         .setSmallIcon(R.drawable.green_icon)
-                        .setContentTitle("SleepMinder is active")
-                        .setContentText("Sleep well :)");
+                        .setContentTitle("đang chạy theo dõi giấc ngủ.")
+                        .setContentText("good night!");
         Intent resultIntent = new Intent(this, SleepRecorderActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(SleepRecorderActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
@@ -60,10 +62,8 @@ public class RecordingService extends Service {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
-
         mBuilder.setProgress(0,0,true);
         mBuilder.setCategory(NotificationCompat.CATEGORY_PROGRESS);
-
         mBuilder.setOngoing(true);
         return mBuilder.build();
     }

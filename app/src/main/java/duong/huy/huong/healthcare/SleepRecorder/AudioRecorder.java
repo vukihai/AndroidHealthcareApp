@@ -45,7 +45,6 @@ public class AudioRecorder extends Thread {
                     N);
         }
         recorder.startRecording();
-
         while(!this.stopped) {
             N = recorder.read(buffer, 0, buffer.length);
 
@@ -57,12 +56,8 @@ public class AudioRecorder extends Thread {
     }
 
     private void process(short[] buffer) {
-
         featureExtractor.update(buffer);
-
     }
-
-
     public void close() {
         stopped = true;
     }

@@ -13,22 +13,16 @@ import static android.support.constraint.Constraints.TAG;
 public class Recorder {
     private static String TAG = "SleepMinderRecorder";
     private AudioRecorder audioRecorder = null;
-    private StringBuilder data = new StringBuilder();
     private long startTime = 0;
     private PowerManager.WakeLock wakeLock;
     private boolean running = false;
-    private OutputHandler outputHandler;
     private NoiseModel noiseModel = new NoiseModel();
     private String status = "";
     private int phase;
     private int sleep, wake, noise;
     public static Context context;
     Intent intent;
-    /**
-     * Start tracking
-     */
-    public void setIntent(){
-    }
+
     @SuppressLint("InvalidWakeLockTag")
     public void start(Context context) {
         this.running = true;
@@ -47,9 +41,7 @@ public class Recorder {
         {
             public void run() {
                 synchronized (Recorder.this) {
-
                     if(audioRecorder == null) {
-                        // Recording already stopped. Do nothing here.
                         return;
                     }
                     if(noiseModel.getMovement() > 1) {
@@ -72,25 +64,20 @@ public class Recorder {
     }
 
     /**
-     * Stop tracking
+     * ngừng theo dõi.
      */
     public void stop(Context context) {
         synchronized (this) {
-
             if(audioRecorder != null) {
-                // Stop the audio recorder
                 audioRecorder.close();
-                // Cleanup
                 audioRecorder = null;
             }
 
-            // Release the lock
             wakeLock.release();
 
-            // Write the data to a file
             dumpData();
 
-            // Cleanup
+            // clean
             startTime = System.currentTimeMillis();
             phase = 0;
             sleep = 0;
@@ -110,8 +97,6 @@ public class Recorder {
      */
     private void dumpData() {
         if(intent == null) intent = new Intent("duong.huy.huong.sleepbroadcast");
-        // Save the data
-        //outputHandler.saveData(data.toString(), startTime);
         intent.putExtra("startTime", String.valueOf(startTime));
         intent.putExtra("phase", String.valueOf(phase));
         intent.putExtra("sleep", String.valueOf(sleep));
@@ -120,7 +105,7 @@ public class Recorder {
         intent.putExtra("status", status);
         context.sendBroadcast(intent);
         Log.d("sleep recorder", "status" + status);
-        Log.d("sleep recorder", "chi so " + String.valueOf(sleep) + String.valueOf(wake));
+        Log.d("sleep recorder", "chi so " + sleep + wake);
         if(System.currentTimeMillis() - startTime > phase*300000 ) {
             phase++;
             if(sleep>wake) status += "0 ";

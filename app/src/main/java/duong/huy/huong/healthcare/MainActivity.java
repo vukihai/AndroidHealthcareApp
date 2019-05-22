@@ -17,14 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import duong.huy.huong.healthcare.HeartRateMonitor.HeartRateActivity;
 import duong.huy.huong.healthcare.RouteTracker.RouteTrackerActivity;
 import duong.huy.huong.healthcare.SleepRecorder.SleepRecorderActivity;
-import duong.huy.huong.healthcare.SleepTracker.SleepTrackerActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
 import duong.huy.huong.healthcare.db.User_Info;

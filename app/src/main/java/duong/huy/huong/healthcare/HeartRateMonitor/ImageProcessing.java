@@ -1,7 +1,13 @@
 package duong.huy.huong.healthcare.HeartRateMonitor;
 
 public abstract class ImageProcessing {
-
+    /**
+     * stackoverflow. input: dãy byte điểm ảnh từ camera. output là tổng điểm ảnh đỏ.
+     * @param yuv420sp
+     * @param width
+     * @param height
+     * @return
+     */
     private static int decodeYUV420SPtoRedSum(byte[] yuv420sp, int width, int height) {
         if (yuv420sp == null) return 0;
 
@@ -38,16 +44,7 @@ public abstract class ImageProcessing {
     }
 
     /**
-     * Given a byte array representing a yuv420sp image, determine the average
-     * amount of red in the image. Note: returns 0 if the byte array is NULL.
-     *
-     * @param yuv420sp
-     *            Byte array representing a yuv420sp image
-     * @param width
-     *            Width of the image.
-     * @param height
-     *            Height of the image.
-     * @return int representing the average amount of red in the image.
+     * chia lấy bình quân điểm ảnh đỏ.
      */
     public static int decodeYUV420SPtoRedAvg(byte[] yuv420sp, int width, int height) {
         if (yuv420sp == null) return 0;

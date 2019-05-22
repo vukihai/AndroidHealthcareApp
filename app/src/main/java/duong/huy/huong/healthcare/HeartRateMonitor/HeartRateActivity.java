@@ -11,30 +11,19 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import duong.huy.huong.healthcare.R;
 import duong.huy.huong.healthcare.db.Heart_Rate;
 import duong.huy.huong.healthcare.db.Heart_RateDao;
 
-
-/**
- * This class extends Activity to handle a picture preview, process the preview
- * for a red values and determine a heart beat.
- *
- * @author Justin Wetherell <phishman3579@gmail.com>
- */
 public class HeartRateActivity extends Activity {
 
     private static final String TAG = "HeartRateMonitor";
@@ -224,47 +213,8 @@ public class HeartRateActivity extends Activity {
             if (averageIndex == averageArraySize) averageIndex = 0;
             averageArray[averageIndex] = imgAvg;
             averageIndex++;
-
-            // Transitioned from one state to another to the same
-//            if (newType != currentType) {
-//                currentType = newType;
-//                beatImg.setImageResource(R.drawable.green_icon);
-//            }
-
-            long endTime = System.currentTimeMillis();
-            double totalTimeInSecs = (endTime - startTime) / 1000d;
-            if (totalTimeInSecs >= 10) {
-                double bps = (beats / totalTimeInSecs);
-                int dpm = (int) (bps * 60d);
-                if (dpm < 30 || dpm > 180) {
-                    //startTime = System.currentTimeMillis();
-                    //beats = 0;
-                    processing.set(false);
-                    return;
-                }
-
-                // Log.d(TAG,
-                // "totalTimeInSecs="+totalTimeInSecs+" beats="+beats);
-
-                if (beatsIndex == beatsArraySize) beatsIndex = 0;
-                beatsArray[beatsIndex] = dpm;
-                beatsIndex++;
-
-                int beatsArrayAvg = 0;
-                int beatsArrayCnt = 0;
-                for (int i = 0; i < beatsArray.length; i++) {
-                    if (beatsArray[i] > 0) {
-                        beatsArrayAvg += beatsArray[i];
-                        beatsArrayCnt++;
-                    }
-                }
-                int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
-                //text.setText(String.valueOf(beatsAvg));
-               // startTime = System.currentTimeMillis();
-                //beats = 0;
-            }
-            processing.set(false);
         }
+
     };
 
     private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
