@@ -83,7 +83,8 @@
                         android:text=" 0 phút"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/ic_stopwatch" />
 
                     <TextView
                         android:id="@+id/textVi2"
@@ -107,7 +108,8 @@
                         android:text=" 0 km"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/ic_location_on_road" />
 
                     <TextView
                         android:id="@+id/text2"
@@ -131,7 +133,8 @@
                         android:text=" 0 calos"
                         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:drawableLeft="@drawable/ic_calories" />
                 </LinearLayout>
 
             </FrameLayout>
@@ -150,7 +153,8 @@
                     android:drawableStart="@drawable/ic_target"
                     android:background="@drawable/border_radius"
                     android:onClick="setStepGoal"
-                    android:text="Đặt mục tiêu" />
+                    android:text="Đặt mục tiêu"
+                    android:drawableLeft="@drawable/ic_target" />
 
                 <Button
                     android:id="@+id/button1"
@@ -160,7 +164,8 @@
                     android:drawableStart="@drawable/ic_play_circle_outline_black_24dp"
                     android:background="@drawable/border_radius"
                     android:onClick="startSrv"
-                    android:text="Chạy bộ đếm" />
+                    android:text="Chạy bộ đếm"
+                    android:drawableLeft="@drawable/ic_pause" />
             </LinearLayout>
 
             <FrameLayout
