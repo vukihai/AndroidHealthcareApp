@@ -46,7 +46,6 @@
                         android:gravity="center"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text=" Sleep Stage "
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textSize="25sp" />
@@ -84,61 +83,9 @@
             </FrameLayout>
 
             <LinearLayout
-                android:id="@+id/LinearLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/gradient"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/editText"
-                    android:layout_width="146dp"
-                    android:layout_height="47dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorGray"
-                    android:ems="10"
-                    android:inputType="time"
-                    android:paddingLeft="10dp"
-                    android:text="23:00 AM"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-
-                <EditText
-                    android:id="@+id/editText2"
-                    android:layout_width="138dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorGray"
-                    android:ems="10"
-                    android:inputType="time"
-                    android:paddingLeft="10dp"
-                    android:text="7:00 AM"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/editText3"
-                    android:layout_width="138dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorGray"
-                    android:ems="10"
-                    android:inputType="time"
-                    android:paddingLeft="30dp"
-                    android:text="75%"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="372dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/gradient"
                 android:orientation="vertical">
 
@@ -304,7 +251,8 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="118dp"
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:id="@+id/textView33"
