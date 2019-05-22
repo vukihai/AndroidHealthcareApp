@@ -15,7 +15,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import duong.huy.huong.healthcare.StepCounter.StepCounterActivity;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
 import duong.huy.huong.healthcare.db.User_Info;
 import duong.huy.huong.healthcare.db.User_InfoDao;
+import duong.huy.huong.healthcare.remindService.MotionRemindService;
 
 /**
  * Lớp này là activity mặc định khi khởi chạy. Nó chứa các fragment: Home(mặc định), Remind.
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     Intent mSleepRecorderIntent;
     TextView step;
     TextView calo;
+    Intent srv; // service cho motionReminder
+    Switch onOffSwitch1; // switch của nhắc vận động
     /**
      * Bắt sự kiện click thanh điều hướng chân màn hình.
      */
@@ -169,9 +174,21 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.getSupportActionBar().hide();// ẩn actionbar
-
         registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
+    }
 
+    /**
+     * gán sự kiện cho các nút phần nhắc nhở.
+     */
+    public void motionRemindOnclick(View v) {
+        if(!isMyServiceRunning(MotionRemindService.class)) {
+            srv = new Intent(getBaseContext(), MotionRemindService.class);
+            startService(srv);
+        }else {
+            if(isMyServiceRunning(MotionRemindService.class)) {
+                stopService(srv);
+            }
+        }
     }
     @Override
     public void onResume(){
@@ -191,8 +208,14 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            step.setText(String.valueOf(intent.getStringExtra("numSteps")));
-            calo.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calo");
+            if(step != null && calo != null) {
+                step.setText(String.valueOf(intent.getStringExtra("numSteps")));
+                calo.setText(String.valueOf((float)Math.round(0.45*Integer.parseInt(intent.getStringExtra("numSteps")))/10) + " calo");
+            } else {
+                step = (TextView) findViewById(R.id.textView7);
+                calo = (TextView) findViewById(R.id.textView5);
+            }
+
         }
 
     };

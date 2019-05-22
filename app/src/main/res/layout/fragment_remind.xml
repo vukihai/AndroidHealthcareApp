@@ -46,6 +46,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
+                            android:onClick="motionRemindOnclick"
                             android:text="Bật/Tắt nhắc nhở vận động khi ngồi lâu             "
                             android:textColor="@color/black"
                             android:textStyle="bold" />
