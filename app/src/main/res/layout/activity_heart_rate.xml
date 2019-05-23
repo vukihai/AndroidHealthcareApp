@@ -89,31 +89,34 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="Bấm Đo để bắt đầu"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="@color/home_action_bar_color"/>
 
                     <TextView
                         android:id="@+id/textView13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:layout_weight="1"
                         android:text="Bạn cần đo 40 nhịp"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="@color/home_action_bar_color"/>
                 </LinearLayout>
             </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border_radius_heartbeat">
+                android:background="@color/home_action_bar_color">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
                     android:layout_marginTop="10dp"
-                    android:text="Đặt ngón tay lên Camera và đèn Flash để bắt đầu đo nhịp tim"
+                    android:text="Đặt ngón tay lên Camera và đèn Flash để đo nhịp tim"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="15dp"
                     android:textStyle="bold" />
 
                 <LinearLayout

@@ -148,19 +148,24 @@
 
                 <Button
                     android:id="@+id/button"
-                    android:layout_width="175dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:drawableStart="@drawable/ic_target"
                     android:background="@drawable/border_radius"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:onClick="setStepGoal"
                     android:text="Đặt mục tiêu"
                     android:drawableLeft="@drawable/ic_target" />
 
                 <Button
                     android:id="@+id/button1"
-                    android:layout_width="175dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:drawableStart="@drawable/ic_play_circle_outline_black_24dp"
                     android:background="@drawable/border_radius"
                     android:onClick="startSrv"

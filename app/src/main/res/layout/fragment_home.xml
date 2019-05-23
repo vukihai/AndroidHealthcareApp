@@ -73,10 +73,11 @@
 
                         <TextView
                             android:id="@+id/textView3"
-                            android:layout_width="@dimen/home_button_width"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/home_button_height"
                             android:layout_gravity="center"
-                            android:layout_margin="@dimen/margin_large"
+                            android:layout_weight="1"
+                            android:layout_margin="10dp"
                             android:background="@drawable/border_radius"
                             android:drawableStart="@drawable/ic_walker"
                             android:drawablePadding="@dimen/activity_vertical_margin"
@@ -89,10 +90,11 @@
 
                         <TextView
                             android:id="@+id/textVie"
-                            android:layout_width="@dimen/home_button_width"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/home_button_height"
                             android:layout_gravity="center"
-                            android:layout_margin="@dimen/margin_large"
+                            android:layout_weight="1"
+                            android:layout_margin="10dp"
                             android:background="@drawable/border_radius"
                             android:drawableStart="@drawable/ic_destination"
                             android:drawablePadding="@dimen/activity_vertical_margin"
@@ -113,9 +115,10 @@
 
                         <Button
                             android:id="@+id/step_counter_btn"
-                            android:layout_width="@dimen/home_button_width"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/home_button_height"
-                            android:layout_margin="@dimen/margin_large"
+                            android:layout_weight="1"
+                            android:layout_margin="10dp"
                             android:background="@drawable/border_radius"
                             android:drawableStart="@drawable/ic_heart"
                             android:onClick="heartRateOnclick"
@@ -125,9 +128,10 @@
 
                         <Button
                             android:id="@+id/step_counter_btn1"
-                            android:layout_width="@dimen/home_button_width"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/home_button_height"
-                            android:layout_margin="@dimen/margin_large"
+                            android:layout_weight="1"
+                            android:layout_margin="10dp"
                             android:background="@drawable/border_radius"
                             android:drawableStart="@drawable/ic_sleep"
                             android:drawablePadding="@dimen/activity_vertical_margin"
@@ -152,6 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="| Heathcare |"
-            android:textSize="@dimen/univers_header_text_size" />
+            android:textSize="@dimen/univers_header_text_size"
+            android:textColor="@color/white"/>
     </FrameLayout>
 </FrameLayout>

@@ -19,13 +19,17 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="375dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
                 android:background="@color/home_action_bar_color">
+
                 <FrameLayout
                     android:layout_width="350dp"
                     android:layout_height="300dp"
-                    android:background="@drawable/border_radius_sittime"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:background="@drawable/border_radius_sittime">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -55,44 +59,60 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="356dp">
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_marginBottom="75dp"
+                android:layout_weight="1">
+
                 <FrameLayout
                     android:layout_width="350dp"
-                    android:layout_height="300dp"
+                    android:layout_height="500dp"
                     android:layout_gravity="center"
                     android:background="@drawable/border_radius_sleeping_time">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/textView8"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:drawableBottom="@drawable/ic_bedroom"
+                            android:layout_marginBottom="20dp"
+                            android:gravity="right|center"
                             android:text="Nhắc nhở giờ đi ngủ"
                             android:textColor="@color/white"
                             android:textSize="20dp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
+                        <TimePicker
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </TimePicker>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
                             <Button
                                 android:id="@+id/button2"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/margin_large"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight="1"
                                 android:background="@drawable/border_radius"
                                 android:text="Thêm giờ đi ngủ" />
-                            <Switch
-                                android:layout_width="wrap_content"
+
+                            <Button
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Bật/Tắt Giờ đi ngủ      "
-                                android:textColor="@color/white"
-                                android:textStyle="bold"/>
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_radius"
+                                android:text="Tắt giờ đi ngủ"
+                                android:textColor="@color/black" />
                         </LinearLayout>
                     </LinearLayout>
                 </FrameLayout>
