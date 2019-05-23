@@ -6,7 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.text.format.DateFormat;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+
+import duong.huy.huong.healthcare.db.Sleeprecorder;
+import duong.huy.huong.healthcare.db.SleeprecorderDao;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -104,12 +112,38 @@ public class Recorder {
         intent.putExtra("noise", String.valueOf(noise));
         intent.putExtra("status", status);
         context.sendBroadcast(intent);
-        Log.d("sleep recorder", "status" + status);
-        Log.d("sleep recorder", "chi so " + sleep + wake);
         if(System.currentTimeMillis() - startTime > phase*300000 ) {
             phase++;
             if(sleep>wake) status += "0 ";
             else status += "1 ";
+//            Sleeprecorder tmp = new Sleeprecorder();
+//            tmp.setstatus("1 1");
+//            tmp.settime("12");
+//            SleeprecorderDao.insertRecord(tmp);
+            // them vao db
+            ArrayList<Sleeprecorder> slr = SleeprecorderDao.loadAllRecords();
+            String today = (String) DateFormat.format("dd",   Calendar.getInstance().getTime());
+            Sleeprecorder lastDay;
+            if(slr != null || slr.size() == 0) {
+                while(slr.size()>20){
+                    SleeprecorderDao.deleteRecord(slr.get(0));
+                    slr.remove(0);
+                }
+                lastDay = slr.get(slr.size()-1);
+                if(today != lastDay.gettime()) {
+                    lastDay = new Sleeprecorder();
+                    lastDay.settime(today);
+                    lastDay.setstatus(status);
+                }
+                lastDay.setstatus(status);
+                SleeprecorderDao.updateRecord(lastDay);
+            } else {
+                lastDay = new Sleeprecorder();
+                lastDay.setstatus(status);
+                lastDay.settime(today);
+                SleeprecorderDao.insertRecord(lastDay);
+
+            }
             sleep = 0;
             wake = 0;
             noise = 0;

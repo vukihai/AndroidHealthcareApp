@@ -161,13 +161,11 @@ public class HeartRateActivity extends Activity {
                 }
             }
             int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
-            TYPE newType = currentType;
             if(started) {
                 time.setText("Thời gian đo:" + String.valueOf((System.currentTimeMillis() - startTime)/1000)+" s");
             }
-
+            Log.d("heartrate step: ", String.valueOf(imgAvg));
             if (imgAvg < rollingAverage && imgAvg > 180) {
-                newType = TYPE.RED;
                 if(lastBeatTime != 0) {
                     long curTime = System.currentTimeMillis();
                     long step =  curTime- lastBeatTime;
@@ -213,6 +211,7 @@ public class HeartRateActivity extends Activity {
             if (averageIndex == averageArraySize) averageIndex = 0;
             averageArray[averageIndex] = imgAvg;
             averageIndex++;
+            processing.set(false);
         }
 
     };

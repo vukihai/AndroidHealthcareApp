@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import duong.huy.huong.healthcare.db.User_Info;
@@ -85,7 +86,10 @@ public class UserInfoFragment extends Fragment {
 //        sexEdt = view.findViewById(R.id.txtGioitinh);
         heightEdt =(EditText)view.findViewById(R.id.edHeight);
         weightEdt =(EditText)view.findViewById(R.id.edWeight);
-        User_Info mUser_info= User_InfoDao.loadAllRecords().get(0);
+
+        ArrayList<User_Info> mUser_infos = User_InfoDao.loadAllRecords();
+        if(mUser_infos==null || mUser_infos.size() == 0) return view;
+        User_Info mUser_info= mUser_infos.get(0);
         nameEdt.setText(mUser_info.getname());
         heightEdt.setText(mUser_info.getheight());
         weightEdt.setText(mUser_info.getweight());

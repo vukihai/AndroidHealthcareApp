@@ -7,29 +7,17 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
-
-import java.util.ArrayList;
-
 import duong.huy.huong.healthcare.MainActivity;
 import duong.huy.huong.healthcare.R;
-import duong.huy.huong.healthcare.SleepRecorder.MyApplication;
 import duong.huy.huong.healthcare.StepCounter.StepCounterSrv;
-import duong.huy.huong.healthcare.db.User_Info;
-import duong.huy.huong.healthcare.db.User_InfoDao;
-
 @SuppressWarnings("ALL")
 public class MotionRemindService extends Service {
     private int curStep = 0;

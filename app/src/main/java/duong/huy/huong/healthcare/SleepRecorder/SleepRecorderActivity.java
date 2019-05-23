@@ -22,7 +22,7 @@ public class SleepRecorderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep_recorder);
-        test = findViewById(R.id.textView9);
+        //test = findViewById(R.id.textView9);
 
         Intent trackingIntent = new Intent(SleepRecorderActivity.this, RecordingService.class);
         startService(trackingIntent);
