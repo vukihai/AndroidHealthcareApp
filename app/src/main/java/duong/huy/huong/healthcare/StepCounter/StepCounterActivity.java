@@ -196,8 +196,11 @@ public class StepCounterActivity extends AppCompatActivity {
             } else {
                 t2.setText(String.valueOf(time/60000) + " phút");
             }
+            double height = 175;
             ArrayList<User_Info> mUser_infos = User_InfoDao.loadAllRecords();
-            double height = Double.valueOf(mUser_infos.get(0).getheight());
+            if(mUser_infos!=null && mUser_infos.size()!=0) {
+                height = Double.valueOf(mUser_infos.get(0).getheight());
+            }
             double dist = Double.valueOf(intent.getStringExtra("numSteps"))*0.415*height/100;
             if(dist < 100) {
                 distance.setText(String.valueOf((int)dist) + "m");

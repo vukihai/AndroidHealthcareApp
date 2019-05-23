@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements Home.OnFragmentIn
         this.getSupportActionBar().hide();// ẩn actionbar
         registerReceiver(broadcastReceiver, new IntentFilter("duong.huy.huong.stepcounterbroadcast"));
     }
-
+    
     /**
      * gán sự kiện cho các nút phần nhắc nhở.
      */

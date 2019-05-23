@@ -84,14 +84,14 @@ public class RouteTrackerActivity extends FragmentActivity implements
                                     int position, long id) {
                 ArrayList<Walking> walkings = WalkingDao.loadAllRecords();
                 gpsTrack = StringToGpsTrack(walkings.get(walkings.size()-(int)id-1).getroad());
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(gpsTrack.getPoints().get(0), 19));
+                if(gpsTrack.getPoints().size()!=0) map.moveCamera(CameraUpdateFactory.newLatLngZoom(gpsTrack.getPoints().get(0), 19));
                 Log.d("id", String.valueOf(walkings.size()-(int)id-1));
             }
         });
 
         // disable button khi chua tim thay vi tri
         if(!foundLocation) {
-            Button start = (Button) findViewById(R.id.start_btn);
+            Button start = (Button) findViewById(R.id.button3);
             Button end = (Button) findViewById(R.id.end_button);
             start.setEnabled(false);
             end.setEnabled(false);
@@ -194,7 +194,7 @@ public class RouteTrackerActivity extends FragmentActivity implements
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownLatLng, 19));
             firstLat = false;
             mTextView.setText("đã tìm thấy vị trí hiện tại");
-            Button start = (Button) findViewById(R.id.start_btn);
+            Button start = (Button) findViewById(R.id.button3);
             start.setEnabled(true);
         } else {
             distance += tmp.distanceTo(location);
@@ -246,13 +246,14 @@ public class RouteTrackerActivity extends FragmentActivity implements
     public void onStartBtn(View v) {
         if(!onGoing) onGoing = true;
         startTime = System.currentTimeMillis();
-        Button start = (Button) findViewById(R.id.start_btn);
+        Button start = (Button) findViewById(R.id.button3);
         Button end = (Button) findViewById(R.id.end_button);
         start.setEnabled(false);
         end.setEnabled(true);
         List<LatLng> points = gpsTrack.getPoints();
         points.clear();
         gpsTrack.setPoints(points);
+        mTextView.setText("let's go!");
     }
 
     /**
@@ -280,6 +281,11 @@ public class RouteTrackerActivity extends FragmentActivity implements
     private Polyline StringToGpsTrack(String s) {
         List<LatLng> points = gpsTrack.getPoints();
         points.clear();
+        if(s.length() == 0) {
+            gpsTrack.setPoints(points);
+            return gpsTrack;
+        }
+
         double lat, log;
         String[] tmp = s.split(" ");
         for(int i=0; i<tmp.length; i+=2) {
@@ -304,10 +310,16 @@ public class RouteTrackerActivity extends FragmentActivity implements
         mWalking.settime_begin(String.valueOf(startTime));
         mWalking.settime_end(String.valueOf(finishTime));
         WalkingDao.insertRecord(mWalking);
-        Button start = (Button) findViewById(R.id.start_btn);
+
+        Button start = (Button) findViewById(R.id.button3);
         Button end = (Button) findViewById(R.id.end_button);
         start.setEnabled(true);
         end.setEnabled(false);
+
+        startTime= 0;
+        gpsTrack.getPoints().clear();
+        distance = 0;
+
         loadHistory();
     }
 }

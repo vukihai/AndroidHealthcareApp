@@ -1,6 +1,9 @@
 package duong.huy.huong.healthcare.db;
 
 import android.os.Bundle;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Sleeprecorder {
@@ -65,11 +68,12 @@ public class Sleeprecorder {
 
     @Override
     public String toString() {
-        return "Sleeprecorder{" +
-            " m_ID=" + m_ID +
-            ", mtime='" + mtime + '\'' +
-            ", mstatus='" + mstatus + '\'' +
-            '}';
+        Timestamp stamp = new Timestamp(Long.valueOf(mtime));
+        Date date = new Date(stamp.getTime());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        String strDate = formatter.format(date);
+
+        return strDate;
     }
 
 

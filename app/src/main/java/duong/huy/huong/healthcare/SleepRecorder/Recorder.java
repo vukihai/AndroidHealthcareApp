@@ -29,11 +29,16 @@ public class Recorder {
     private int phase;
     private int sleep, wake, noise;
     public static Context context;
+    private Sleeprecorder lastDay;
     Intent intent;
 
     @SuppressLint("InvalidWakeLockTag")
     public void start(Context context) {
         this.running = true;
+        lastDay = new Sleeprecorder();
+        lastDay.settime(String.valueOf(System.currentTimeMillis()));
+        lastDay.setstatus(" ");
+        SleeprecorderDao.insertRecord(lastDay);
         PowerManager mgr = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
         wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SleepMinderLock");
         wakeLock.acquire();
@@ -114,36 +119,28 @@ public class Recorder {
         context.sendBroadcast(intent);
         if(System.currentTimeMillis() - startTime > phase*300000 ) {
             phase++;
-            if(sleep>wake) status += "0 ";
-            else status += "1 ";
+            if(sleep>(wake*6/5)) status += "2 ";
+            else if(sleep > wake*4/5) {
+                status +="1 ";
+            }
+            else status += "0 ";
 //            Sleeprecorder tmp = new Sleeprecorder();
 //            tmp.setstatus("1 1");
 //            tmp.settime("12");
 //            SleeprecorderDao.insertRecord(tmp);
             // them vao db
-            ArrayList<Sleeprecorder> slr = SleeprecorderDao.loadAllRecords();
-            String today = (String) DateFormat.format("dd",   Calendar.getInstance().getTime());
-            Sleeprecorder lastDay;
-            if(slr != null || slr.size() == 0) {
-                while(slr.size()>20){
-                    SleeprecorderDao.deleteRecord(slr.get(0));
-                    slr.remove(0);
-                }
-                lastDay = slr.get(slr.size()-1);
-                if(today != lastDay.gettime()) {
-                    lastDay = new Sleeprecorder();
-                    lastDay.settime(today);
-                    lastDay.setstatus(status);
-                }
-                lastDay.setstatus(status);
-                SleeprecorderDao.updateRecord(lastDay);
-            } else {
-                lastDay = new Sleeprecorder();
-                lastDay.setstatus(status);
-                lastDay.settime(today);
-                SleeprecorderDao.insertRecord(lastDay);
+//            ArrayList<Sleeprecorder> slr = SleeprecorderDao.loadAllRecords();
+//            String today = (String) DateFormat.format("dd",   Calendar.getInstance().getTime());
+//            Sleeprecorder lastDay;
+//            if(slr = null && slr.size() != 0) {
+//                while(slr.size()>20){
+//                    SleeprecorderDao.deleteRecord(slr.get(0));
+//                    slr.remove(0);
+//                }
 
-            }
+            lastDay.settime(String.valueOf(System.currentTimeMillis()));
+            lastDay.setstatus(status);
+            SleeprecorderDao.updateRecord(lastDay);
             sleep = 0;
             wake = 0;
             noise = 0;
